@@ -25,7 +25,7 @@
     .navbar-section {
         height: auto;
         .logo {
-            background-image: url(../assets/images/doodle3.jpg);
+        // background-image: url(../assets/images/doodle3.jpg);
         width: 100%;
         height: 120px;
         display: flex;
