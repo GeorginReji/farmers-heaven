@@ -4,13 +4,13 @@
     </div>
     <div class="product-row">
     <el-divider />
-    <H2>Most ordered products</H2>
+    <h2>Most ordered products</h2>
     <el-row justify="space-around">
     <el-col
       :span="5"
       :xs="12"
       :sm="6"
-      md="6"
+      :md="6"
     >
         <products />
     </el-col>
@@ -18,7 +18,7 @@
       :span="5"
       :xs="12"
       :sm="6"
-      md="6"
+      :md="6"
     >
         <products />
     </el-col>
@@ -26,7 +26,7 @@
       :span="5"
       :xs="12"
       :sm="6"
-      md="6"
+      :md="6"
     >
         <products />
     </el-col>
@@ -34,7 +34,7 @@
       :span="5"
       :xs="12"
       :sm="6"
-      md="6"
+      :md="6"
     >
         <products />
     </el-col>
@@ -43,7 +43,6 @@
 </template>
 
 <script setup>
-
 </script>
 
 <style lang="scss" scoped>

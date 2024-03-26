@@ -9,10 +9,7 @@
     </el-container>
   </template>
   
-  <script>
-  export default {
-    name: 'AuthLayout'
-  }
+  <script setup>
   </script>
   
   <style lang="scss">
@@ -27,28 +24,37 @@
     justify-content: space-between;
   
     .auth-content{
-      flex: 1;
+      width: 50%;
       padding: 5rem 10rem;
       background-color: #FFFFFF;
       min-height: 100vh;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
     .art-content{
+      width: 50%;
       flex: 2;
-      padding: 5rem 10rem;
       text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 2rem;
       img{
           height: auto;
           width: 50%;
           margin: 0 auto;
       }
     }
+    @media screen and (max-width: 800px) {
+      .art-content {
+        display: none;
+      }
+      .auth-content {
+        width: 100%;
+      }
+    }
   }
+ 
   </style>
   

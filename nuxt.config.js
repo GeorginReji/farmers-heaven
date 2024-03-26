@@ -1,4 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
@@ -6,10 +6,13 @@ export default defineNuxtConfig({
     '@/assets/scss/main.scss',
     '@/assets/scss/elements-custom.scss'
   ],
-  // plugins: [
-  //   '@/plugins/element-plus.js'
-  // ],  
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
+    redirect: false
+    },
   modules: [
-    '@element-plus/nuxt'
-  ],
+    '@element-plus/nuxt',
+    '@nuxtjs/supabase'
+  ]
 })
