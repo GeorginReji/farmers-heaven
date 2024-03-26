@@ -1,5 +1,13 @@
 <template>
     <div class="topbar">
+        <div class="menu-items">
+            <el-button type="success" @click="drawer = true">
+                <i class="ri-menu-line"></i>
+            </el-button>
+            <el-drawer v-model="drawer" title="I am the title" :with-header="false">
+                <span>Hi there!</span>
+            </el-drawer>
+        </div>
         <div class="social-media">
             <i class="ri-facebook-fill"></i>
             <i class="ri-twitter-x-line"></i>
@@ -14,7 +22,10 @@
                     content="Login or create new account"
                     placement="bottom-end"
                 >
-                    <el-button><i class="ri-user-fill"></i>Login/Sign-Up</el-button>
+                <nuxt-link to="/AuthLogin" class="ar-link">
+                    <el-link type="success"><i class="ri-user-fill"></i>Login/Sign-Up</el-link>
+              </nuxt-link>
+               
                     </el-tooltip>
             </div>
             <div class="cart-icon">
@@ -24,7 +35,7 @@
                     content="View saved products"
                     placement="bottom-end"
                 >
-                    <el-button><i class="ri-heart-fill"></i>My Wish-list</el-button>
+                <el-link><i class="ri-heart-fill"></i>My Wish-list</el-link>
                 </el-tooltip>
             </div>
         </div>
@@ -32,7 +43,7 @@
 </template>
 
 <script setup>
-
+const drawer = ref(false)
 </script>
 
 <style lang="scss">
@@ -41,6 +52,12 @@
         justify-content: space-between;
         font-size: 2.5rem;
         background-color: #663b2f;
+        .menu-items {
+            display: none;
+            .el-button {
+                color: white;
+            }
+        }
         .social-media {
             display: flex;
             padding: 5px;
@@ -56,13 +73,19 @@
             font-size: 2rem;
             padding: 5px;
             .sign-in {
-            display: flex;
-            gap: 3px;
-            white-space: nowrap;
+                display: flex;
+                gap: 3px;
+                white-space: nowrap;
+                i {
+                    padding-right: 5px;
+                }
          }
         .cart-icon {
             display: flex;
             gap: 5px;
+            i {
+                    padding-right: 5px;
+                }
         }
         .el-button {
             span{
@@ -76,5 +99,14 @@
             outline: 0;
         }
     }
+    @media screen and (max-width: 600px) {
+        .social-media{
+            display: none;
+        }
+        .menu-items {
+            display: block;
+        }
+    }
+        
     }
 </style>

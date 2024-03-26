@@ -20,7 +20,6 @@
 .layout {
     height: 100vh;
     display: flex;
-    gap: 20px;
     flex-direction: column;
     .navbar-section {
         height: auto;
