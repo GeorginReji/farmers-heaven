@@ -12,7 +12,7 @@
     <div class="login-form">
       <el-tabs v-model="activeName" type="card" class="demo-tabs">
         <el-tab-pane label="Login" name="first">
-          <el-form ref="loginForm" :model="loginModel"  label-position="top">
+          <el-form ref="loginForm" :model="loginModel" :style="{ width: '350px' }" label-position="top">
             <el-form-item label="Email" prop="email">
               <el-input v-model="loginModel.email" class="bg-grey" type="email" placeholder="Email Address" />
             </el-form-item>
@@ -30,7 +30,7 @@
       </el-form>
     </el-tab-pane>
     <el-tab-pane label=" Sign-Up" name="second">
-      <el-form :rules="signUpRules" label="Create an account" ref="signUpForm" :model="signupModel" label-position="top">
+      <el-form :rules="signUpRules" label="Create an account" ref="signUpForm" :style="{ width: '350px' }" :model="signupModel" label-position="top">
         <el-form-item label="Email" prop="email">
           <el-input v-model="signupModel.email" class="bg-grey" type="email" placeholder="Email Address" />
         </el-form-item>
