@@ -1,6 +1,5 @@
-
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   css: [
     'remixicon/fonts/remixicon.css',
     '@/assets/scss/main.scss',

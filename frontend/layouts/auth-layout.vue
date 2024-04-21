@@ -1,6 +1,9 @@
 <template>
     <el-container class="auth-container">
       <div class="auth-content">
+        <div @click="$router.back()" class="btn-back">
+        <i class="ri-arrow-left-fill"></i>
+      </div>
         <slot />
       </div>
       <div class="art-content">
@@ -22,7 +25,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  
     .auth-content{
       width: 50%;
       padding: 5rem 10rem;
@@ -31,6 +33,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      .btn-back {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #f0f0f0; /* Just for visibility */
+        padding: 10px;
+        i {
+          font-size: 24px;
+          // font-weight: lighter;
+        }
+      }
     }
     .art-content{
       width: 50%;

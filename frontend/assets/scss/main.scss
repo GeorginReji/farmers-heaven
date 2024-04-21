@@ -20,3 +20,10 @@ html {
       font-size: 1.6rem;
       overflow-x: hidden;
   }
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  a:hover {
+    text-decoration: underline;
+  }

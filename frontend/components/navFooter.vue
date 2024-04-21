@@ -67,6 +67,7 @@ ul{
 .footer{
   background-color: #663b2f;
     padding: 10px 0;
+    z-index: 1;
 }
 .footer-col{
    width: 25%;
@@ -132,11 +133,6 @@ ul{
   .footer-col{
     width: 50%;
     margin-bottom: 30px;
-}
-}
-@media(max-width: 574px){
-  .footer-col{
-    width: 100%;
 }
 }
 </style>
