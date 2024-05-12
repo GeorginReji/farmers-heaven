@@ -8,11 +8,11 @@
                 <div class="logo">
                     <img src="../assets/images/TFH_logo.png" alt="">
                 </div>
-                <el-menu>
+                <el-menu :router="true">
                     <el-menu-item index="1">
                         <span>Our Products</span>
                     </el-menu-item>
-                    <el-menu-item index="2">
+                    <el-menu-item index="/AboutUs">
                         <span>About</span>
                     </el-menu-item>
                     <el-menu-item index="3">

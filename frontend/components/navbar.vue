@@ -5,9 +5,10 @@
       :popper-offset="16"
       style="width: 600px"
       ellipsis
+      :router="true"
     >
       <el-menu-item index="1">Our Products</el-menu-item>
-      <el-menu-item index="2">About</el-menu-item>
+      <el-menu-item index="AboutUs">About</el-menu-item>
       <el-menu-item index="3" >Gift Hampers</el-menu-item>
       <el-menu-item index="4">Gallery</el-menu-item>
       <el-menu-item index="5">Blog</el-menu-item>
