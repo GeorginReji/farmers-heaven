@@ -9,7 +9,7 @@
                     <img src="../assets/images/TFH_logo.png" alt="">
                 </div>
                 <el-menu :router="true">
-                    <el-menu-item index="1">
+                    <el-menu-item index="/ProductsList">
                         <span>Our Products</span>
                     </el-menu-item>
                     <el-menu-item index="/AboutUs">
@@ -38,12 +38,12 @@
         </div>
         <div class="login-icons">
             <div class="sign-in">
-                    <nuxt-link to="/AuthLogin" class="ar-link">
-                        <i class="ri-user-fill"></i>Login/Sign-Up
-                    </nuxt-link>
+                <nuxt-link to="/AuthLogin" class="ar-link">
+                    <i class="ri-user-fill"></i>Login/Sign-Up
+                </nuxt-link>
             </div>
             <div class="cart-icon">
-                    <i class="ri-heart-fill"></i>My Wish-list
+                <i class="ri-heart-fill"></i>My Wish-list
             </div>
         </div>
     </div>
@@ -61,7 +61,6 @@ const drawer = ref(false)
     justify-content: space-between;
     font-size: 2.5rem;
     background-color: #663b2f;
-
     .menu-items {
         display: none;
         .menu-icon-container {
@@ -92,50 +91,41 @@ const drawer = ref(false)
             }
         }
     }
-
     .social-media {
         display: flex;
         padding: 5px;
         gap: 10px;
         color: #D9CFCC;
-
         i:hover {
             cursor: pointer;
         }
     }
-
     .login-icons {
         display: flex;
         gap: 10px;
         font-size: 2rem;
         padding: 5px;
-
         .sign-in {
             display: flex;
             gap: 3px;
             white-space: nowrap;
-
             i {
                 padding-right: 5px;
             }
         }
-
         .cart-icon {
             display: flex;
             gap: 5px;
-
             i {
                 padding-right: 5px;
             }
         }
-
         .el-button {
             span {
                 display: flex;
                 gap: 10px;
             }
         }
-
         .el-button:focus,
         .el-button:hover {
             color: #67C23A;
@@ -143,16 +133,13 @@ const drawer = ref(false)
             outline: 0;
         }
     }
-
     @media screen and (max-width: 600px) {
         .social-media {
             display: none;
         }
-
         .menu-items {
             display: block;
         }
     }
-
 }
 </style>
