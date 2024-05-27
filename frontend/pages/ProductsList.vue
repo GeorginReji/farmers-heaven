@@ -1,8 +1,8 @@
 <template>
     <div class="product-list-wrapper">
         <el-row :gutter="20" class="product-row">
-            <el-col :span="4" :xs="12" :sm="6" :md="6" v-for="(product, index) in productList" :key="product.id">
-                <products />
+            <el-col :span="4" :xs="24" :sm="6" :md="6" v-for="(product, index) in productList" :key="product.id">
+                <ProductCard />
                 <el-divider style="border-style: none;" />
             </el-col>
         </el-row>
@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+
 const productList = [
     { name: "Shirt", id: 1, price: 29.99 },
     { name: "Hat", id: 2, price: 14.50 },
