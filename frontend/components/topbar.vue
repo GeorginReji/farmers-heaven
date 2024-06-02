@@ -42,9 +42,11 @@
                     <i class="ri-user-fill"></i>Login/Sign-Up
                 </nuxt-link>
             </div>
-            <div class="cart-icon">
-                <i class="ri-heart-fill"></i>My Wish-list
-            </div>
+            <el-badge class="item" :value="2">
+                <el-button circle @click="() => navigateTo({ path: '/cart' })">
+                    <i class="ri-shopping-cart-line"></i>
+                </el-button>
+            </el-badge>
         </div>
     </div>
 </template>
@@ -59,6 +61,7 @@ const drawer = ref(false)
 .topbar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 2.5rem;
     background-color: #663b2f;
     .menu-items {
@@ -102,6 +105,7 @@ const drawer = ref(false)
     }
     .login-icons {
         display: flex;
+        align-items: center;
         gap: 10px;
         font-size: 2rem;
         padding: 5px;
@@ -140,6 +144,10 @@ const drawer = ref(false)
         .menu-items {
             display: block;
         }
+    }
+    .item {
+        margin-top: 10px;
+        margin-right: 10px;
     }
 }
 </style>

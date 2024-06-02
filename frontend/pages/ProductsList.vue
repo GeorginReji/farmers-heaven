@@ -1,7 +1,7 @@
 <template>
     <div class="product-list-wrapper">
         <el-row :gutter="20" class="product-row">
-            <el-col :span="4" :xs="24" :sm="6" :md="6" v-for="(product, index) in productList" :key="product.id">
+            <el-col :span="4" :xs="12" :sm="12" :md="6" v-for="(product, index) in productList" :key="product.id">
                 <ProductCard />
                 <el-divider style="border-style: none;" />
             </el-col>
