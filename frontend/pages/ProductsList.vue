@@ -40,11 +40,11 @@ const productList = [
 	margin-bottom: 20px;
 }
 .product-list-wrapper {
-	// padding: 3rem 3rem;
+	padding: 3rem 6rem;
 }
-@media (max-width: 750px) {
+@media (min-width: 400px) {
 	.product-list-wrapper {
-		padding: none;
+		padding: 0;
 	}
 }
 </style>
