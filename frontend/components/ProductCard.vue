@@ -84,9 +84,6 @@
 			padding-left: 5px;
 		}
 	}
-	.el-card__body {
-		padding: 1rem;
-	}
 }
 @media (max-width: 767px) {
 	.card-content {
