@@ -1,76 +1,58 @@
 <template>
 	<div class="auth-page">
 		<div class="heading">
-			<h1 class="title">
-				Welcome to The Farmers Heaven
-			</h1>
-			<h6 class="sub-title">
-				Please sign in to continue...
-			</h6>
+			<h1 class="title">Welcome to The Farmers Heaven</h1>
+			<h6 class="sub-title">Please sign in to continue...</h6>
 		</div>
 
 		<div class="login-form">
-			<el-tabs v-model="activeName" type="card" class="demo-tabs">
-				<el-tab-pane label="Login" name="first">
-					<el-form ref="loginForm" :model="loginModel" :style="{ width: '350px' }" label-position="top">
-						<el-form-item label="Email" prop="email">
-							<el-input v-model="loginModel.email" class="bg-grey" type="email"
-								placeholder="Email Address" />
-						</el-form-item>
-						<el-form-item label="password" prop="password">
-							<el-input v-model="loginModel.password" class="bg-grey" type="password"
-								placeholder="Password" />
-							<nuxt-link to="/ResetPassword" class="ar-link">
-								Forgot Password ?
-							</nuxt-link>
-						</el-form-item>
-						<el-form-item>
-							<el-button :style="{ width: '100%' }" type="primary">
-								Log In
-							</el-button>
-						</el-form-item>
-					</el-form>
+			<el-tabs
+				v-model="activeName"
+				type="card"
+				class="demo-tabs"
+			>
+				<el-tab-pane
+					label="Login"
+					name="first"
+				>
+					<el-button
+						@click="handleSignup"
+						:style="{ width: '100%' }"
+						type="primary"
+					>
+						Login With<i
+							:style="{ padding: '10px' }"
+							class="ri-google-fill"
+						/>
+					</el-button>
 				</el-tab-pane>
-				<el-tab-pane label=" Sign-Up" name="second">
-					<el-form :rules="signUpRules" label="Create an account" :ref="signUpForm"
-						:style="{ width: '350px' }" :model="signupModel" label-position="top">
-						<el-form-item label="Email" prop="email">
-							<el-input v-model="signupModel.email" class="bg-grey" type="email"
-								placeholder="Email Address" />
-						</el-form-item>
-						<el-form-item label="Phone Number" prop="phone">
-							<el-input v-model="signupModel.phone" class="bg-grey" type="phone"
-								placeholder="Phone Number">
-								<template #prepend>+91</template>
-							</el-input>
-						</el-form-item>
-						<el-form-item label="password" prop="password">
-							<el-input v-model="signupModel.password" class="bg-grey" type="password"
-								placeholder="Password" />
-						</el-form-item>
-						<el-form-item label="confirm password" prop="confirmPassword">
-							<el-input v-model="signupModel.confirmPassword" class="bg-grey" type="password"
-								placeholder="confirm Password" />
-						</el-form-item>
-						<el-form-item>
-							<el-button @click="handleSignup" :style="{ width: '100%' }" type="primary">
-								Sign Up
-							</el-button>
-						</el-form-item>
-					</el-form>
+				<el-tab-pane
+					label=" Sign-Up"
+					name="second"
+				>
+					<el-button
+						@click="handleSignup"
+						:style="{ width: '100%' }"
+						type="primary"
+					>
+						Sign-Up<i
+							:style="{ padding: '10px' }"
+							class="ri-google-fill"
+						/>
+					</el-button>
 				</el-tab-pane>
-
 			</el-tabs>
 		</div>
 	</div>
 </template>
 
 <script setup>
-
-import { reactive } from 'vue';
-
+import { reactive } from 'vue'
+import { useAuthStore } from '~/store/auth'
+const { authenticateUser } = useAuthStore()
+const { authenticated } = storeToRefs(useAuthStore())
 definePageMeta({
-	layout: 'auth-layout'
+	layout: 'auth-layout',
 })
 
 const activeName = ref('first')
@@ -82,9 +64,19 @@ const signupModel = reactive({
 })
 const signUpForm = ref(null)
 const loginModel = reactive({
-	email: '',
-	password: ''
+	username: 'emilys',
+	password: 'emilyspass',
 })
+
+const router = useRouter()
+
+const handleLogin = async () => {
+	await authenticateUser(loginModel) // call authenticateUser and pass the user object
+	// redirect to homepage if user is authenticated
+	if (authenticated) {
+		router.push('/')
+	}
+}
 
 const checkPhone = (rule, value, callback) => {
 	if (!value) {
@@ -98,7 +90,7 @@ const checkPhone = (rule, value, callback) => {
 	if (value.length !== 10) {
 		return callback(new Error('Enter a valid 10-digit phone number'))
 	}
-	callback();
+	callback()
 }
 
 const validatePass = (rule, value, callback) => {
@@ -124,7 +116,13 @@ const validatePass2 = (rule, value, callback) => {
 }
 
 const signUpRules = reactive({
-	email: [{ required: true, type: 'email', message: 'Please input correct email address', }],
+	email: [
+		{
+			required: true,
+			type: 'email',
+			message: 'Please input correct email address',
+		},
+	],
 	password: [{ validator: validatePass, trigger: 'blur' }],
 	confirmPassword: [{ validator: validatePass2, trigger: 'blur' }],
 	phone: [{ validator: checkPhone, trigger: 'blur' }],
@@ -132,7 +130,7 @@ const signUpRules = reactive({
 
 const handleSignup = async (e) => {
 	e.preventDefault()
-	if (!signupModel) return;
+	if (!signupModel) return
 	// const form = signUpForm.value
 	// await form.validate()
 	// console.log("sign up form", form)
@@ -143,7 +141,7 @@ const handleSignup = async (e) => {
 	// 	console.log('Error: Form validation failed.')
 	// 	// Handle validation errors (e.g., display error messages)
 	//};
-	//	
+	//
 }
 </script>
 
@@ -152,7 +150,7 @@ const handleSignup = async (e) => {
 	.login-form {
 		.el-form {
 			padding: 10px;
-			border: 1px solid #C0C4CC;
+			border: 1px solid #c0c4cc;
 		}
 	}
 	.heading {
