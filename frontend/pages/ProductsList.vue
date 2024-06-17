@@ -1,14 +1,12 @@
 <template>
 	<div class="product-list-wrapper">
-		<el-row
-			:gutter="20"
-			class="product-row"
-		>
+		<el-row class="product-row">
 			<el-col
 				:span="4"
 				:xs="12"
 				:sm="12"
 				:md="6"
+				style="padding: 10px"
 				v-for="(product, index) in productList"
 				:key="product.id"
 			>
@@ -42,7 +40,7 @@ const productList = [
 .product-list-wrapper {
 	padding: 3rem 6rem;
 }
-@media (min-width: 400px) {
+@media only screen and (max-width: 767px) {
 	.product-list-wrapper {
 		padding: 0;
 	}
