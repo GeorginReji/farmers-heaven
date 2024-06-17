@@ -45,6 +45,7 @@
 		justify-content: center;
 		flex-direction: column;
 		background-color: #fffbf0;
+		padding: 5px 5px;
 		&:hover {
 			background-color: #fff1de;
 		}
@@ -91,6 +92,9 @@
 		// flex-direction: column;
 		// justify-content: space-between;
 		// align-items: center;
+	}
+	.el-card__body {
+		padding: 5px 0;
 	}
 }
 </style>
