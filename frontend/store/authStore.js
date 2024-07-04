@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { authServices } from '@/server/authServices'
+import { authUser } from '~/server/authServices'
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', {
 	actions: {
 		async authenticateUser() {
 			this.loading = true
-			const { data, error } = await authServices().authUser()
+			const { data, error } = await authUser()
 			console.log('redirect url', data)
 
 			// if (data.value) {
