@@ -41,12 +41,11 @@ import { useRuntimeConfig } from 'nuxt/app';
 const config = useRuntimeConfig();
 const props = defineProps({
 	product: Object,
-})
-
-const imageUrl = computed(() => {
-  return `${config.public.imageBase+props.product.images[0].download_url}`;
 });
 
+const imageUrl = computed(() => {
+	return `${config.public.imageBase + props.product.thumbnail.download_url}`;
+});
 </script>
 
 <style lang="scss">
