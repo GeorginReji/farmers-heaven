@@ -1,21 +1,23 @@
 <template>
-	<div class="product-card-wrapper">
+	<div
+		v-if="props.product"
+		class="product-card-wrapper"
+	>
+		<!-- <h1>{{ product.product.images[0].download_url }}</h1> -->
 		<el-card shadow="hover">
 			<NuxtLink to="/Product">
-				<img
-					src="../assets/images/spice-1.jpg"
-					class="image"
+				<el-image
+					:src="imageUrl"
+					fit="cover"
 				/>
 			</NuxtLink>
 			<div class="card-content">
 				<div class="product-details">
 					<div class="product-name">
-						<span>Star anise</span>
+						<span>{{ product.name }}</span>
 					</div>
 					<p class="description">
-						Lorem ipsum dolor, sit amet dicta, eligendi ipsam,
-						deserunt dolorum necessitatibus officiis voluptate atque
-						quaerat.
+						{{ props.product.description }}
 					</p>
 				</div>
 				<div class="btn-price">
@@ -33,7 +35,19 @@
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRuntimeConfig } from 'nuxt/app';
+
+const config = useRuntimeConfig();
+const props = defineProps({
+	product: Object,
+})
+
+const imageUrl = computed(() => {
+  return `${config.public.imageBase+props.product.images[0].download_url}`;
+});
+
+</script>
 
 <style lang="scss">
 .product-card-wrapper {

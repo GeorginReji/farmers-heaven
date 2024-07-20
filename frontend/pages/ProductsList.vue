@@ -1,36 +1,33 @@
 <template>
-	<div class="product-list-wrapper">
+	<div
+		class="product-list-wrapper"
+		v-if="productsList"
+	>
+		<!-- <h1>{{ productsList }}</h1> -->
 		<el-row class="product-row">
 			<el-col
 				:span="4"
 				:xs="12"
 				:sm="12"
 				:md="6"
-				style="padding: 10px"
-				v-for="(product, index) in productList"
+				style="padding: 0 10px"
+				v-for="(product, index) in productsList"
 				:key="product.id"
 			>
-				<ProductCard />
-				<el-divider style="border-style: none" />
+				<ProductCard :product="product" />
 			</el-col>
 		</el-row>
 	</div>
+	<div v-else><h2>productList empty</h2></div>
 </template>
 
 <script setup>
-const productList = [
-	{ name: 'Shirt', id: 1, price: 29.99 },
-	{ name: 'Hat', id: 2, price: 14.5 },
-	{ name: 'Jeans', id: 3, price: 59.95 },
-	{ name: 'Shoes', id: 4, price: 74.88 },
-	{ name: 'Jacket', id: 5, price: 99.0 },
-	{ name: 'Jacket', id: 6, price: 99.0 },
-	{ name: 'Jacket', id: 7, price: 99.0 },
-	{ name: 'Jacket', id: 8, price: 99.0 },
-	{ name: 'Jacket', id: 9, price: 99.0 },
-	{ name: 'Jacket', id: 10, price: 99.0 },
-	{ name: 'Jacket', id: 11, price: 99.0 },
-]
+import { useProductStore } from '@/store/productStore'
+const dataStore = useProductStore()
+const { productsList } = storeToRefs(dataStore)
+onMounted(() => {
+	dataStore.getProducts()
+})
 </script>
 
 <style lang="scss" scoped>
