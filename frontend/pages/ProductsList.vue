@@ -10,12 +10,11 @@
 				:xs="12"
 				:sm="12"
 				:md="6"
-				style="padding: 10px"
+				style="padding: 0 10px"
 				v-for="(product, index) in productsList"
 				:key="product.id"
 			>
 				<ProductCard :product="product" />
-				<el-divider style="border-style: none" />
 			</el-col>
 		</el-row>
 	</div>

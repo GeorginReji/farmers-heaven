@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import { fetchProducts } from '~/server/productApi'
+import { defineStore } from 'pinia';
+import { getApiBaseUrl } from '@/utils/utils';
 
 export const useProductStore = defineStore({
 	id: 'productStore',
@@ -8,10 +8,10 @@ export const useProductStore = defineStore({
 	}),
 	actions: {
 		async getProducts() {
-			const list = await $fetch(
-				'http://13.202.12.213/fh-api/v1/admin/products/'
-			)
-			this.productsList = list.results
+			const list = await $fetch(`${getApiBaseUrl()}admin/products/`, {
+				method: 'GET',
+			});
+			this.productsList = list.results;
 		},
 	},
-})
+});

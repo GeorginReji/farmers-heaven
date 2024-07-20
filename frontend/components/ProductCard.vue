@@ -7,10 +7,7 @@
 		<el-card shadow="hover">
 			<NuxtLink to="/Product">
 				<el-image
-					:src="
-						'http://13.202.12.213/media/' +
-						props.product.images[0].download_url
-					"
+					:src="imageUrl"
 					fit="cover"
 				/>
 			</NuxtLink>
@@ -39,9 +36,17 @@
 </template>
 
 <script setup>
+import { useRuntimeConfig } from 'nuxt/app';
+
+const config = useRuntimeConfig();
 const props = defineProps({
 	product: Object,
 })
+
+const imageUrl = computed(() => {
+  return `${config.public.imageBase+props.product.images[0].download_url}`;
+});
+
 </script>
 
 <style lang="scss">

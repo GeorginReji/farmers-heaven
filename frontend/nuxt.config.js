@@ -1,7 +1,8 @@
 export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
-			apiBase: process.env.API_BASE_URL || 'http://localhost:3000',
+			apiBase: process.env.DOMAIN_URL+'fh-api/v1/',
+			imageBase: process.env.DOMAIN_URL+'/media/'
 		},
 	},
 	devtools: { enabled: false },
@@ -11,4 +12,7 @@ export default defineNuxtConfig({
 		'@/assets/scss/elements-custom.scss',
 	],
 	modules: ['@element-plus/nuxt', '@pinia/nuxt'],
+	build: {
+		transpile: ['qs']
+	}
 })
