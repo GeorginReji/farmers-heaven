@@ -5,7 +5,9 @@
 	>
 		<!-- <h1>{{ product.product.images[0].download_url }}</h1> -->
 		<el-card shadow="hover">
-			<NuxtLink to="/Product">
+			<NuxtLink
+				:to="{ name: 'Product', query: { id: props.product.id } }"
+			>
 				<el-image
 					:src="imageUrl"
 					fit="cover"

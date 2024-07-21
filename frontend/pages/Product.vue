@@ -1,18 +1,47 @@
 <template>
-	<div class="wrapper">
+	<div
+		class="wrapper"
+		v-if="productById"
+	>
 		<div class="images-wrapper">
 			<div class="image-container">
-				<el-image :src="currImage" alt="product image" fit="cover" />
+				<el-image
+					:src="currImage"
+					alt="product image"
+					fit="cover"
+				/>
 			</div>
 			<div class="image-list-container">
-				<el-button @click="scrollPrev" round style="left: -20px;">
+				<el-button
+					@click="scrollPrev"
+					round
+					style="left: -20px"
+				>
 					<i class="ri-arrow-left-line"></i>
 				</el-button>
-				<div class="image-list" ref="imageListRef">
-					<el-image v-for="(image, index) in images" :src="image" alt="Slide Image"
-						style="width: 100px; height: 100px" @click="() => currImage = images[index]" fit="cover" />
+				<div
+					class="image-list"
+					ref="imageListRef"
+				>
+					<el-image
+						v-for="(productImg, index) in productById.images"
+						:src="imageUrl(productImg)"
+						alt="Slide Image"
+						style="width: 100px; height: 100px"
+						@click="
+							() =>
+								(currImage = imageUrl(
+									productById.images[index]
+								))
+						"
+						fit="cover"
+					/>
 				</div>
-				<el-button @click="scrollNext" round style="right: -20px;">
+				<el-button
+					@click="scrollNext"
+					round
+					style="right: -20px"
+				>
 					<i class="ri-arrow-right-line"></i>
 				</el-button>
 			</div>
@@ -23,62 +52,91 @@
 				<h3>₹100 - ₹700</h3>
 			</div>
 			<div class="description">
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum praesentium tenetur mollitia ratione rem
-				sequi voluptas maiores, dolor eius dicta deleniti quibusdam quas consequuntur, qui ab aperiam, officiis
-				odio accusamus.
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum praesentium tenetur mollitia ratione rem
-				sequi voluptas maiores, dolor eius dicta deleniti quibusdam quas consequuntur, qui ab aperiam, officiis
-				odio accusamus.
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum
+				praesentium tenetur mollitia ratione rem sequi voluptas maiores,
+				dolor eius dicta deleniti quibusdam quas consequuntur, qui ab
+				aperiam, officiis odio accusamus. Lorem ipsum dolor, sit amet
+				consectetur adipisicing elit. Ipsum praesentium tenetur mollitia
+				ratione rem sequi voluptas maiores, dolor eius dicta deleniti
+				quibusdam quas consequuntur, qui ab aperiam, officiis odio
+				accusamus.
 			</div>
 			<el-radio-group v-model="quantityRadio">
-				<el-radio value="1" size="large" border>200 g</el-radio>
-				<el-radio value="2" size="large" border>500g</el-radio>
-				<el-radio value="3" size="large" border>1kg</el-radio>
+				<el-radio
+					value="1"
+					size="large"
+					border
+					>200 g</el-radio
+				>
+				<el-radio
+					value="2"
+					size="large"
+					border
+					>500g</el-radio
+				>
+				<el-radio
+					value="3"
+					size="large"
+					border
+					>1kg</el-radio
+				>
 			</el-radio-group>
 			<div class="button-wrapper">
-				<el-input-number v-model="quantity" :min="1" :max="10" />
-				<el-button type="success" class="button">Add to <i class="ri-shopping-cart-line"></i></el-button>
+				<el-input-number
+					v-model="quantity"
+					:min="1"
+					:max="10"
+				/>
+				<el-button
+					type="success"
+					class="button"
+					>Add to <i class="ri-shopping-cart-line"></i
+				></el-button>
 			</div>
-
 		</div>
-
 	</div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
+import { useProductStore } from '@/store/productStore';
 
+const router = useRoute();
+const config = useRuntimeConfig();
+const productStore = useProductStore();
 
-const quantityRadio = ref("1")
-const quantity = ref(1)
-const images = ref([
-	'https://picsum.photos/id/212/800/800',
-	'https://picsum.photos/id/233/800/800',
-	'https://picsum.photos/id/165/800/800',
-	'https://picsum.photos/id/99/800/800',
-	'https://picsum.photos/id/14/800/800',
-	'https://picsum.photos/id/154/800/800',
-	'https://picsum.photos/id/164/800/800',
-	'https://picsum.photos/id/174/800/800',
-	'https://picsum.photos/id/134/800/800'
-])
-const currImage = ref(images.value[0])
-const imageListRef = ref(null)
+const productById = ref(null);
+const currImage = ref('');
+const quantityRadio = ref('1');
+const quantity = ref(1);
+const imageListRef = ref(null);
+
+const productId = router.query.id;
+onMounted(async () => {
+	if (productId) {
+		productById.value = await productStore.getProductById(productId);
+		currImage.value = imageUrl(productById.value.images[0]);
+		console.log('product in id', productById.value, productId);
+	}
+});
+const imageUrl = (product) => {
+	return `${config.public.imageBase + product.download_url}`;
+};
+
 const scrollNext = () => {
 	if (imageListRef.value) {
-		imageListRef.value.scrollBy({ left: 200, behavior: 'smooth' }) // Example usage
+		imageListRef.value.scrollBy({ left: 200, behavior: 'smooth' });
 	}
-}
+};
 const scrollPrev = () => {
 	if (imageListRef.value) {
-		imageListRef.value.scrollBy({ left: -200, behavior: 'smooth' })
+		imageListRef.value.scrollBy({ left: -200, behavior: 'smooth' });
 	}
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
 .wrapper {
-	background-color: #FFFBF0;
+	background-color: #fffbf0;
 	padding: 2rem 10%;
 	display: flex;
 	.images-wrapper {
