@@ -10,58 +10,54 @@
 					Continue Shopping
 				</span>
 			</div>
-			<el-card>
-				<div class="product-info">
-					<el-image
-						style="width: 100px; height: 100px"
-						src="https://picsum.photos/id/154/800/800"
-						alt="product image"
-						fit="cover"
-					/>
-					<div class="name">
-						<p>Product Name</p>
-						<span>Quantity: 500g</span>
+			<div
+				v-if="cartStore.cartList.length"
+				style="width: 100%"
+			>
+				<el-card v-for="(product, index) in cartStore.cartList">
+					<div class="product-info">
+						<el-image
+							style="width: 100px; height: 100px"
+							:src="imageUrl(product.thumbnail.download_url)"
+							alt="product image"
+							fit="cover"
+						/>
+						<div class="name">
+							<p>{{ product.name }}</p>
+							<span>Quantity: 500g</span>
+						</div>
+						<el-input-number
+							v-model="product.count"
+							@update:model-value="
+								updateItemCount(product.id, $event)
+							"
+							:min="1"
+							:max="10"
+						/>
+						<h3>{{ `₹${product.price * product.count}` }}</h3>
+						<el-button
+							circle
+							@click="cartStore.removeItem(product.id)"
+							><i class="ri-delete-bin-line"></i
+						></el-button>
 					</div>
-					<el-input-number
-						v-model="quantity"
-						:min="1"
-						:max="10"
-					/>
-					<h3>₹700</h3>
-					<el-button circle
-						><i class="ri-delete-bin-line"></i
-					></el-button>
-				</div>
-			</el-card>
-			<el-card>
-				<div class="product-info">
-					<el-image
-						style="width: 100px; height: 100px"
-						src="https://picsum.photos/id/154/800/800"
-						alt="product image"
-						fit="cover"
-					/>
-					<div class="name">
-						<p>Product Name</p>
-						<span>Quantity: 500g</span>
-					</div>
-					<el-input-number
-						v-model="quantity"
-						:min="1"
-						:max="10"
-					/>
-					<h3>₹700</h3>
-					<el-button circle
-						><i class="ri-delete-bin-line"></i
-					></el-button>
-				</div>
-			</el-card>
+				</el-card>
+			</div>
+			<el-text
+				v-else
+				size="large"
+				tag="b"
+				>Cart is Empty</el-text
+			>
 		</div>
-		<el-card class="cart-summary">
+		<el-card
+			v-if="cartStore.cartList.length"
+			class="cart-summary"
+		>
 			<h2>Order Summary</h2>
 			<div class="row">
 				<p>Subtotal</p>
-				<h3>₹700</h3>
+				<h3>{{ `₹${subTotal}` }}</h3>
 			</div>
 			<div class="row">
 				<p>Delivery Fee</p>
@@ -85,7 +81,28 @@
 	</div>
 </template>
 <script setup>
-const quantity = ref(1)
+import { useCartStore } from '@/store/cartStore';
+
+const config = useRuntimeConfig();
+const cartStore = useCartStore();
+
+onMounted(async () => {
+	await cartStore.loadFromStorage();
+});
+
+const imageUrl = (productImgUrl) => {
+	return `${config.public.imageBase + productImgUrl}`;
+};
+
+const updateItemCount = (productID, count) => {
+	cartStore.updateItemCount(productID, count);
+};
+
+const subTotal = computed(() => {
+	let subtotal = 0;
+	cartStore.cartList.forEach((item) => (subtotal += item.price * item.count));
+	return subtotal;
+});
 </script>
 
 <style lang="scss">

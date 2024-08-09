@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 		'@/assets/scss/elements-custom.scss',
 	],
 	modules: ['@element-plus/nuxt', '@pinia/nuxt'],
-
+	middleware: ['default'],
 	build: {
 		transpile: ['qs'],
 	},

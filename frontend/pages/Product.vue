@@ -83,7 +83,7 @@
 			</el-radio-group>
 			<div class="button-wrapper">
 				<el-input-number
-					v-model="quantity"
+					v-model="count"
 					:min="1"
 					:max="10"
 				/>
@@ -107,7 +107,7 @@ const productStore = useProductStore();
 const productById = ref(null);
 const currImage = ref('');
 const quantityRadio = ref('1');
-const quantity = ref(1);
+const count = ref(1);
 const imageListRef = ref(null);
 
 const productId = router.query.id;
