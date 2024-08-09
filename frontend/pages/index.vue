@@ -45,9 +45,14 @@
 </template>
 
 <script setup>
-// definePageMeta({
-// 	middleware: 'auth',
-// })
+import { useCartStore } from '@/store/cartStore';
+definePageMeta({
+	middleware: 'default',
+});
+const cartStore = useCartStore();
+onMounted(async () => {
+	await cartStore.loadFromStorage();
+});
 </script>
 
 <style lang="scss" scoped>

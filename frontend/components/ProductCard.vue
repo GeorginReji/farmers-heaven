@@ -3,9 +3,10 @@
 		v-if="props.product"
 		class="product-card-wrapper"
 	>
-		<!-- <h1>{{ product.product.images[0].download_url }}</h1> -->
 		<el-card shadow="hover">
-			<NuxtLink to="/Product">
+			<NuxtLink
+				:to="{ name: 'Product', query: { id: props.product.id } }"
+			>
 				<el-image
 					:src="imageUrl"
 					fit="cover"
@@ -26,6 +27,7 @@
 						<el-button
 							type="success"
 							class="button"
+							@click="cartStore.addItem(props.product, 1)"
 							>Add to <i class="ri-shopping-cart-line"></i
 						></el-button>
 					</div>
@@ -37,16 +39,17 @@
 
 <script setup>
 import { useRuntimeConfig } from 'nuxt/app';
+import { useCartStore } from '~/store/cartStore';
 
+const cartStore = useCartStore();
 const config = useRuntimeConfig();
 const props = defineProps({
 	product: Object,
-})
-
-const imageUrl = computed(() => {
-  return `${config.public.imageBase+props.product.images[0].download_url}`;
 });
 
+const imageUrl = computed(() => {
+	return `${config.public.imageBase + props.product.thumbnail.download_url}`;
+});
 </script>
 
 <style lang="scss">

@@ -72,7 +72,7 @@
 			</div>
 			<el-badge
 				class="item"
-				:value="2"
+				:value="cartStore.cartList.length"
 			>
 				<el-button
 					circle
@@ -87,6 +87,9 @@
 
 <script setup>
 import { useAuthStore } from '@/store/authStore';
+import { useCartStore } from '@/store/cartStore';
+
+const cartStore = useCartStore();
 
 const drawer = ref(false);
 const authStore = useAuthStore();
