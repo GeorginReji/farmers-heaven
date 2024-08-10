@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+	ssr: false,
 	runtimeConfig: {
 		public: {
 			apiBase: process.env.DOMAIN_URL + 'fh-api/v1/',
