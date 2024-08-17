@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { getApiBaseUrl } from '~/utils/utils';
+import { useCartStore } from './cartStore';
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
 		userDetails: null,
@@ -68,6 +69,8 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 		async logout() {
+			const cartStore = useCartStore();
+
 			try {
 				// Clear cookies
 				const refreshToken = useCookie('refreshToken');
@@ -83,9 +86,10 @@ export const useAuthStore = defineStore('auth', {
 
 				ElMessage({
 					message: 'Successfully logged out',
-					type: 'success',
+					type: 'error',
 				});
-				localStorage.removeItem('authDetails');
+				localStorage.clear();
+				cartStore.cartList = [];
 				// Redirect to home page or login page
 				navigateTo('/');
 

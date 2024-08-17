@@ -54,6 +54,9 @@ yarn build
 
 # bun
 bun run build
+
+#static site
+npx nuxi generate
 ```
 
 Locally preview production build:

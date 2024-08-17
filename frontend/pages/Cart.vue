@@ -28,16 +28,19 @@
 						</div>
 						<el-input-number
 							v-model="product.count"
-							@update:model-value="
-								updateItemCount(product.id, $event)
+							@change="
+								() =>
+									cartStore.updateItemCount(
+										product.id,
+										product.count
+									)
 							"
 							:min="1"
-							:max="10"
 						/>
 						<h3>{{ `₹${product.price * product.count}` }}</h3>
 						<el-button
 							circle
-							@click="cartStore.removeItem(product.id)"
+							@click="cartStore.removeItem(product)"
 							><i class="ri-delete-bin-line"></i
 						></el-button>
 					</div>
@@ -75,16 +78,21 @@
 			<el-button
 				style="margin: 0 auto"
 				type="success"
+				@click="handleCheckout"
 				>Proceed to Checkout</el-button
 			>
 		</el-card>
+		<CheckoutForm v-model:checkoutFormVisible="checkoutFormVisible" />
 	</div>
 </template>
 <script setup>
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 
 const config = useRuntimeConfig();
 const cartStore = useCartStore();
+const authStore = useAuthStore();
+const checkoutFormVisible = ref(false);
 
 onMounted(async () => {
 	await cartStore.loadFromStorage();
@@ -94,23 +102,30 @@ const imageUrl = (productImgUrl) => {
 	return `${config.public.imageBase + productImgUrl}`;
 };
 
-const updateItemCount = (productID, count) => {
-	cartStore.updateItemCount(productID, count);
-};
-
 const subTotal = computed(() => {
-	let subtotal = 0;
-	cartStore.cartList.forEach((item) => (subtotal += item.price * item.count));
-	return subtotal;
+	return cartStore.cartList.reduce(
+		(total, item) => total + item.price * item.count,
+		0
+	);
 });
+const handleCheckout = () => {
+	if (!authStore.authenticated) {
+		navigateTo('/AuthLogin');
+	} else {
+		checkoutFormVisible = true;
+	}
+};
 </script>
 
 <style lang="scss">
 .cart-wrapper {
 	background-color: #fffbf0;
-	display: flex;
 	gap: 5rem;
 	padding: 5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 	.cart-table {
 		// border: 1px solid red;
 		background-color: white;

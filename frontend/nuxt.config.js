@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 			imageBase: process.env.DOMAIN_URL + '/media/',
 		},
 	},
-	devtools: { enabled: false },
+	devtools: { enabled: true },
 	css: [
 		'remixicon/fonts/remixicon.css',
 		'@/assets/scss/main.scss',
