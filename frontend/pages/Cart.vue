@@ -60,7 +60,7 @@
 			<h2>Order Summary</h2>
 			<div class="row">
 				<p>Subtotal</p>
-				<!-- <h3>{{ `₹${subTotal}` }}</h3> -->
+				<h3>{{ `₹${subTotal}` }}</h3>
 			</div>
 			<div class="row">
 				<p>Delivery Fee</p>
@@ -78,16 +78,21 @@
 			<el-button
 				style="margin: 0 auto"
 				type="success"
+				@click="handleCheckout"
 				>Proceed to Checkout</el-button
 			>
 		</el-card>
+		<CheckoutForm v-model:checkoutFormVisible="checkoutFormVisible" />
 	</div>
 </template>
 <script setup>
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 
 const config = useRuntimeConfig();
 const cartStore = useCartStore();
+const authStore = useAuthStore();
+const checkoutFormVisible = ref(false);
 
 onMounted(async () => {
 	await cartStore.loadFromStorage();
@@ -97,20 +102,30 @@ const imageUrl = (productImgUrl) => {
 	return `${config.public.imageBase + productImgUrl}`;
 };
 
-// const subTotal = computed(() => {
-// 	return cartStore.cartList.reduce(
-// 		(total, item) => total + item.price * item.count,
-// 		0
-// 	);
-// });
+const subTotal = computed(() => {
+	return cartStore.cartList.reduce(
+		(total, item) => total + item.price * item.count,
+		0
+	);
+});
+const handleCheckout = () => {
+	if (!authStore.authenticated) {
+		navigateTo('/AuthLogin');
+	} else {
+		checkoutFormVisible = true;
+	}
+};
 </script>
 
 <style lang="scss">
 .cart-wrapper {
 	background-color: #fffbf0;
-	display: flex;
 	gap: 5rem;
 	padding: 5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 	.cart-table {
 		// border: 1px solid red;
 		background-color: white;

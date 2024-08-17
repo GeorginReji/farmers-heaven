@@ -6,57 +6,32 @@
 		</div>
 
 		<div class="login-form">
-			<el-tabs
-				v-model="activeName"
-				type="card"
-				class="demo-tabs"
+			<el-button
+				@click="handleSignup"
+				:style="{ width: '100%' }"
+				type="primary"
 			>
-				<el-tab-pane
-					label="Login"
-					name="first"
-				>
-					<el-button
-						@click="handleSignup"
-						:style="{ width: '100%' }"
-						type="primary"
-					>
-						Login With<i
-							:style="{ padding: '10px' }"
-							class="ri-google-fill"
-						/>
-					</el-button>
-				</el-tab-pane>
-				<el-tab-pane
-					label=" Sign-Up"
-					name="second"
-				>
-					<el-button
-						@click="handleSignup"
-						:style="{ width: '100%' }"
-						type="primary"
-					>
-						Sign-Up<i
-							:style="{ padding: '10px' }"
-							class="ri-google-fill"
-						/>
-					</el-button>
-				</el-tab-pane>
-			</el-tabs>
+				Login or Sign up with
+				<i
+					:style="{ padding: '10px' }"
+					class="ri-google-fill"
+				/>
+			</el-button>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { useAuthStore } from '@/store/authStore'
-const { authStart } = useAuthStore()
+import { useAuthStore } from '@/store/authStore';
+const { authStart } = useAuthStore();
 definePageMeta({
 	layout: 'auth-layout',
-})
-const activeName = ref('first')
+});
+const activeName = ref('first');
 
 const handleSignup = async (e) => {
-	await authStart()
-}
+	await authStart();
+};
 </script>
 
 <style lang="scss" scoped>
