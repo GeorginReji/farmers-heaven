@@ -28,16 +28,19 @@
 						</div>
 						<el-input-number
 							v-model="product.count"
-							@update:model-value="
-								updateItemCount(product.id, $event)
+							@change="
+								() =>
+									cartStore.updateItemCount(
+										product.id,
+										product.count
+									)
 							"
 							:min="1"
-							:max="10"
 						/>
 						<h3>{{ `₹${product.price * product.count}` }}</h3>
 						<el-button
 							circle
-							@click="cartStore.removeItem(product.id)"
+							@click="cartStore.removeItem(product)"
 							><i class="ri-delete-bin-line"></i
 						></el-button>
 					</div>
@@ -57,7 +60,7 @@
 			<h2>Order Summary</h2>
 			<div class="row">
 				<p>Subtotal</p>
-				<h3>{{ `₹${subTotal}` }}</h3>
+				<!-- <h3>{{ `₹${subTotal}` }}</h3> -->
 			</div>
 			<div class="row">
 				<p>Delivery Fee</p>
@@ -94,15 +97,12 @@ const imageUrl = (productImgUrl) => {
 	return `${config.public.imageBase + productImgUrl}`;
 };
 
-const updateItemCount = (productID, count) => {
-	cartStore.updateItemCount(productID, count);
-};
-
-const subTotal = computed(() => {
-	let subtotal = 0;
-	cartStore.cartList.forEach((item) => (subtotal += item.price * item.count));
-	return subtotal;
-});
+// const subTotal = computed(() => {
+// 	return cartStore.cartList.reduce(
+// 		(total, item) => total + item.price * item.count,
+// 		0
+// 	);
+// });
 </script>
 
 <style lang="scss">
