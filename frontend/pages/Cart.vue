@@ -112,7 +112,7 @@ const handleCheckout = () => {
 	if (!authStore.authenticated) {
 		navigateTo('/AuthLogin');
 	} else {
-		checkoutFormVisible = true;
+		checkoutFormVisible.value = true;
 	}
 };
 </script>

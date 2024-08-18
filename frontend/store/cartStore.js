@@ -108,6 +108,7 @@ export const useCartStore = defineStore('cart', {
 					},
 				});
 				const formattedCartData = data.results.map((item) => ({
+					id: item.product,
 					count: item.quantity,
 					...item.product_data,
 				}));

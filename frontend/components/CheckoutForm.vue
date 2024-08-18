@@ -54,10 +54,18 @@
 							placeholder="select state"
 						>
 							<el-option
+								label="Kerala"
+								value="1"
+							/>
+							<el-option
+								label="Karnataka"
+								value="2"
+							/>
+							<!-- <el-option
 								v-for="item in stateList"
 								:label="item.name"
 								:value="item.value"
-							/>
+							/> -->
 						</el-select>
 					</el-form-item>
 				</el-col>
@@ -68,14 +76,22 @@
 						label-width="auto"
 					>
 						<el-select
-							v-model="form.state"
+							v-model="form.city"
 							placeholder="select city"
 						>
 							<el-option
+								label="Thodupuzha"
+								value="1"
+							/>
+							<el-option
+								label="Muvatupuzha"
+								value="2"
+							/>
+							<!-- <el-option
 								v-for="item in cityList"
 								:label="item.name"
 								:value="item.value"
-							/>
+							/> -->
 						</el-select>
 					</el-form-item>
 				</el-col>
@@ -110,18 +126,19 @@
 import { useCartStore } from '@/store/cartStore';
 
 const cartStore = useCartStore();
-const stateList = storeToRefs(cartStore, 'stateList');
-const cityList = storeToRefs(cartStore, 'cityList');
+// const stateList = storeToRefs(cartStore, 'stateList');
+// const cityList = storeToRefs(cartStore, 'cityList');
 
 const props = defineProps({
 	checkoutFormVisible: Boolean,
 });
 const emit = defineEmits(['update:checkoutFormVisible']);
 
-onMounted(() => {
-	cartStore.fetchStates();
-	cartStore.fetchCity();
-});
+// onMounted(() => {
+// 	cartStore.fetchStates();
+// 	cartStore.fetchCity();
+// });
+
 const dialogVisible = computed({
 	get: () => props.checkoutFormVisible,
 	set: (value) => emit('update:checkoutFormVisible', value),
@@ -221,7 +238,7 @@ const rules = reactive({
 
 const onSubmit = () => {
 	const formattedCartData = cartStore.cartList.map((item) => ({
-		id: item.id,
+		product: item.id,
 		quantity: item.count,
 	}));
 	cartStore.confirmOrder({
