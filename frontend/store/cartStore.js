@@ -42,8 +42,10 @@ export const useCartStore = defineStore('cart', {
 
 			this.saveToLocalStorage();
 			if (this.authStore.authenticated) {
+				console.log('added product', item);
+
 				this.createCart({
-					product: item.product,
+					product: item.id,
 					quantity: count,
 				});
 			}
@@ -71,7 +73,7 @@ export const useCartStore = defineStore('cart', {
 			this.saveToLocalStorage();
 			// TODO remove item API check
 			if (this.authStore.authenticated)
-				this.updateCart({
+				await this.updateCart({
 					id: product.id,
 					product: product.product,
 					is_active: false,
@@ -115,8 +117,11 @@ export const useCartStore = defineStore('cart', {
 					count: item.quantity,
 					...item.product_data,
 				}));
+
+				// Log a copy of the formatted cart data to avoid the proxy
+				console.log('cart before mapping:', data);
+
 				this.cartList = formattedCartData;
-				console.log('cart after mapping', formattedCartData);
 			} catch (error) {
 				console.error('Error fetching cart from API:', error);
 			}
