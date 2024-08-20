@@ -43,18 +43,19 @@ export const useCartStore = defineStore('cart', {
 			this.saveToLocalStorage();
 			if (this.authStore.authenticated) {
 				this.createCart({
-					product: item.id,
+					product: item.product,
 					quantity: count,
 				});
 			}
 		},
-		updateItemCount(productId, newCount) {
+		updateItemCount(id, productId, newCount) {
 			console.log('Increment count', productId, newCount);
 
 			if (this.cartList.length) {
 				this.saveToLocalStorage();
 				if (this.authStore.authenticated)
 					this.updateCart({
+						id: id,
 						product: productId,
 						quantity: newCount,
 						is_active: true,
@@ -71,8 +72,8 @@ export const useCartStore = defineStore('cart', {
 			// TODO remove item API check
 			if (this.authStore.authenticated)
 				this.updateCart({
-					product: product.id,
-					quantity: 0,
+					id: product.id,
+					product: product.product,
 					is_active: false,
 				});
 		},
@@ -83,6 +84,7 @@ export const useCartStore = defineStore('cart', {
 				this.loadFromLocalStorage();
 			}
 		},
+		// TODO: create a custom composable for API calls.
 		async createCart(item) {
 			try {
 				await $fetch(`${getApiBaseUrl()}orders/cart/`, {
@@ -108,7 +110,8 @@ export const useCartStore = defineStore('cart', {
 					},
 				});
 				const formattedCartData = data.results.map((item) => ({
-					id: item.product,
+					id: item.id,
+					product: item.product,
 					count: item.quantity,
 					...item.product_data,
 				}));
@@ -154,9 +157,17 @@ export const useCartStore = defineStore('cart', {
 					method: 'GET',
 				});
 				// console.log('states list', data);
+				ElMessage({
+					message: 'Your order is confirmed.',
+					type: 'success',
+				});
 				this.statesList = data.results;
 			} catch (error) {
 				console.error('Error fetching cart from API:', error);
+				ElMessage({
+					message: 'Error making order.',
+					type: 'error',
+				});
 			}
 		},
 		async fetchCity() {

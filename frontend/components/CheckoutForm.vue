@@ -54,18 +54,10 @@
 							placeholder="select state"
 						>
 							<el-option
-								label="Kerala"
-								value="1"
-							/>
-							<el-option
-								label="Karnataka"
-								value="2"
-							/>
-							<!-- <el-option
-								v-for="item in stateList"
+								v-for="item in cartStore.statesList"
 								:label="item.name"
-								:value="item.value"
-							/> -->
+								:value="item.id"
+							/>
 						</el-select>
 					</el-form-item>
 				</el-col>
@@ -80,18 +72,10 @@
 							placeholder="select city"
 						>
 							<el-option
-								label="Thodupuzha"
-								value="1"
-							/>
-							<el-option
-								label="Muvatupuzha"
-								value="2"
-							/>
-							<!-- <el-option
-								v-for="item in cityList"
+								v-for="item in cartStore.cityList"
 								:label="item.name"
-								:value="item.value"
-							/> -->
+								:value="item.id"
+							/>
 						</el-select>
 					</el-form-item>
 				</el-col>
@@ -134,10 +118,10 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:checkoutFormVisible']);
 
-// onMounted(() => {
-// 	cartStore.fetchStates();
-// 	cartStore.fetchCity();
-// });
+onMounted(() => {
+	cartStore.fetchStates();
+	cartStore.fetchCity();
+});
 
 const dialogVisible = computed({
 	get: () => props.checkoutFormVisible,
@@ -238,7 +222,7 @@ const rules = reactive({
 
 const onSubmit = () => {
 	const formattedCartData = cartStore.cartList.map((item) => ({
-		product: item.id,
+		product: item.product,
 		quantity: item.count,
 	}));
 	cartStore.confirmOrder({
@@ -249,10 +233,6 @@ const onSubmit = () => {
 		address: form.fullAddress,
 		state: form.state,
 		city: form.city,
-	});
-	ElMessage({
-		message: 'Your order is confirmed.',
-		type: 'success',
 	});
 };
 </script>
