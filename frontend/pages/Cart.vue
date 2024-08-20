@@ -89,6 +89,9 @@
 	</div>
 </template>
 <script setup>
+definePageMeta({
+	middleware: 'default',
+});
 import { useCartStore } from '@/store/cartStore';
 import { useAuthStore } from '@/store/authStore';
 
