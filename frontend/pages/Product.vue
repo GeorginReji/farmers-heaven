@@ -98,6 +98,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+	middleware: 'default',
+});
 import { useProductStore } from '@/store/productStore';
 
 const router = useRoute();

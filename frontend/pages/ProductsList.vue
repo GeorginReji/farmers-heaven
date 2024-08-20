@@ -22,12 +22,15 @@
 </template>
 
 <script setup>
-import { useProductStore } from '@/store/productStore'
-const dataStore = useProductStore()
-const { productsList } = storeToRefs(dataStore)
+definePageMeta({
+	middleware: 'default',
+});
+import { useProductStore } from '@/store/productStore';
+const dataStore = useProductStore();
+const { productsList } = storeToRefs(dataStore);
 onMounted(() => {
-	dataStore.getProducts()
-})
+	dataStore.getProducts();
+});
 </script>
 
 <style lang="scss" scoped>

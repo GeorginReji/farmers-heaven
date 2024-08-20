@@ -119,6 +119,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+	middleware: 'default',
+});
 const testimonials = ref([
 	{
 		id: 1,
@@ -140,26 +143,26 @@ const testimonials = ref([
 		name: 'Eminem',
 		rating: 4,
 	},
-])
-const carouselType = ref('card')
+]);
+const carouselType = ref('card');
 
 const checkScreenSize = () => {
 	if (window.innerWidth <= 768) {
 		// Change 768 to your desired breakpoint
-		carouselType.value = '' // Change to vertical for smaller screens
+		carouselType.value = ''; // Change to vertical for smaller screens
 	} else {
-		carouselType.value = 'card' // Default to card for larger screens
+		carouselType.value = 'card'; // Default to card for larger screens
 	}
-}
+};
 
 onMounted(() => {
-	checkScreenSize()
-	window.addEventListener('resize', checkScreenSize)
-})
+	checkScreenSize();
+	window.addEventListener('resize', checkScreenSize);
+});
 
 onBeforeUnmount(() => {
-	window.removeEventListener('resize', checkScreenSize)
-})
+	window.removeEventListener('resize', checkScreenSize);
+});
 </script>
 
 <style lang="scss" scoped>
