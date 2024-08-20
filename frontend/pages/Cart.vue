@@ -22,27 +22,30 @@
 							alt="product image"
 							fit="cover"
 						/>
-						<div class="name">
-							<p>{{ product.name }}</p>
-							<span>Quantity: 500g</span>
+						<div class="cart-product-details">
+							<div class="name">
+								<p>{{ product.name }}</p>
+								<span>Quantity: 500g</span>
+							</div>
+							<el-input-number
+								v-model="product.count"
+								@change="
+									() =>
+										cartStore.updateItemCount(
+											product.id,
+											product.product,
+											product.count
+										)
+								"
+								:min="1"
+							/>
+							<h3>{{ `₹${product.price * product.count}` }}</h3>
+							<el-button
+								circle
+								@click="cartStore.removeItem(product)"
+								><i class="ri-delete-bin-line"></i
+							></el-button>
 						</div>
-						<el-input-number
-							v-model="product.count"
-							@change="
-								() =>
-									cartStore.updateItemCount(
-										product.id,
-										product.count
-									)
-							"
-							:min="1"
-						/>
-						<h3>{{ `₹${product.price * product.count}` }}</h3>
-						<el-button
-							circle
-							@click="cartStore.removeItem(product)"
-							><i class="ri-delete-bin-line"></i
-						></el-button>
 					</div>
 				</el-card>
 			</div>
@@ -112,7 +115,7 @@ const handleCheckout = () => {
 	if (!authStore.authenticated) {
 		navigateTo('/AuthLogin');
 	} else {
-		checkoutFormVisible = true;
+		checkoutFormVisible.value = true;
 	}
 };
 </script>
@@ -146,12 +149,18 @@ const handleCheckout = () => {
 		}
 		.el-card {
 			.product-info {
-				width: 100%;
 				// padding: 1rem;
 				display: flex;
-				justify-content: space-between;
+				// justify-content: space-between;
 				align-items: center;
-				gap: 1rem;
+				gap: 2rem;
+				.cart-product-details {
+					width: 100%;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					gap: 1rem;
+				}
 				.name {
 					display: flex;
 					flex-direction: column;
@@ -204,6 +213,9 @@ const handleCheckout = () => {
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.product-info {
+		flex-direction: column;
 	}
 }
 </style>

@@ -36,7 +36,7 @@
 	gap: 50px;
 	.el-menu-item {
 		img {
-			width: 100%;
+			min-width: 100%;
 			height: 100px;
 			display: flex;
 			border-top-left-radius: 20px;
