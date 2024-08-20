@@ -145,8 +145,16 @@ export const useCartStore = defineStore('cart', {
 					},
 					body: JSON.stringify(item),
 				});
+				ElMessage({
+					message: 'Your order is confirmed.',
+					type: 'success',
+				});
 			} catch (error) {
 				console.error('Error in confirming order:', error);
+				ElMessage({
+					message: 'Error making order.',
+					type: 'error',
+				});
 			} finally {
 				this.fetchCart();
 			}
@@ -157,17 +165,10 @@ export const useCartStore = defineStore('cart', {
 					method: 'GET',
 				});
 				// console.log('states list', data);
-				ElMessage({
-					message: 'Your order is confirmed.',
-					type: 'success',
-				});
+
 				this.statesList = data.results;
 			} catch (error) {
-				console.error('Error fetching cart from API:', error);
-				ElMessage({
-					message: 'Error making order.',
-					type: 'error',
-				});
+				console.error('Error fetching states from API:', error);
 			}
 		},
 		async fetchCity() {
@@ -178,7 +179,7 @@ export const useCartStore = defineStore('cart', {
 				// console.log('city list', data);
 				this.cityList = data.results;
 			} catch (error) {
-				console.error('Error fetching cart from API:', error);
+				console.error('Error fetching city from API:', error);
 			}
 		},
 	},
