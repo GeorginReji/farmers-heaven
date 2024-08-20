@@ -234,6 +234,7 @@ const onSubmit = () => {
 		state: form.state,
 		city: form.city,
 	});
+	dialogVisible.value = false;
 };
 </script>
 
