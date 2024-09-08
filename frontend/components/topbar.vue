@@ -50,9 +50,49 @@
 			<i class="ri-instagram-line"></i>
 			<i class="ri-whatsapp-line"></i>
 		</div>
+		<div
+			class="top-bar-logo"
+			@click="() => navigateTo({ path: '/' })"
+		>
+			<img
+				style="height: 70px; width: 70px; margin-left: 60px"
+				src="~/assets/images/TFH_logo.png"
+			/>
+		</div>
 		<div class="login-icons">
-			<div class="sign-in">
-				<nuxt-link
+			<!-- List content goes here -->
+			<el-dropdown
+				placement="bottom"
+				trigger="click"
+			>
+				<el-button
+					circle
+					style="margin-top: 10px"
+				>
+					<i class="ri-user-fill" />
+				</el-button>
+				<template #dropdown>
+					<el-dropdown-menu>
+						<el-dropdown-item v-if="authenticated"
+							>Profile</el-dropdown-item
+						>
+						<el-dropdown-item v-if="authenticated"
+							>Settings</el-dropdown-item
+						>
+						<el-dropdown-item
+							v-if="authenticated"
+							@click="authStore.logout"
+							>Logout</el-dropdown-item
+						>
+						<el-dropdown-item
+							v-else
+							@click="() => navigateTo({ path: '/AuthLogin' })"
+							>Login/sign-up</el-dropdown-item
+						>
+					</el-dropdown-menu>
+				</template>
+			</el-dropdown>
+			<!-- <nuxt-link
 					class="ar-link"
 					v-if="authenticated"
 				>
@@ -68,8 +108,8 @@
 					v-else
 				>
 					<i class="ri-user-fill"></i>Login/Sign-Up
-				</nuxt-link>
-			</div>
+				</nuxt-link> -->
+			<!-- </div> -->
 			<el-badge
 				class="item"
 				:value="cartStore.cartList.length"
@@ -103,6 +143,8 @@ const { authenticated } = storeToRefs(authStore);
 	align-items: center;
 	font-size: 2.5rem;
 	background-color: #663b2f;
+	max-height: 50px;
+	z-index: 1000;
 	.menu-items {
 		display: none;
 		.menu-icon-container {
@@ -132,6 +174,10 @@ const { authenticated } = storeToRefs(authStore);
 				padding: 0;
 			}
 		}
+	}
+	.top-bar-logo {
+		display: none;
+		margin-top: 24px;
 	}
 	.social-media {
 		display: flex;
@@ -179,6 +225,9 @@ const { authenticated } = storeToRefs(authStore);
 	@media screen and (max-width: 600px) {
 		.social-media {
 			display: none;
+		}
+		.top-bar-logo {
+			display: block;
 		}
 		.menu-items {
 			display: block;

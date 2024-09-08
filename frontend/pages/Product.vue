@@ -90,6 +90,7 @@
 				<el-button
 					type="success"
 					class="button"
+					@click="cartStore.addItem(productById, 1)"
 					>Add to <i class="ri-shopping-cart-line"></i
 				></el-button>
 			</div>
@@ -102,7 +103,9 @@ definePageMeta({
 	middleware: 'default',
 });
 import { useProductStore } from '@/store/productStore';
+import { useCartStore } from '~/store/cartStore';
 
+const cartStore = useCartStore();
 const router = useRoute();
 const config = useRuntimeConfig();
 const productStore = useProductStore();
