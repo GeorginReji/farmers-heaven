@@ -4,7 +4,10 @@
 		v-if="productsList"
 	>
 		<!-- <h1>{{ productsList }}</h1> -->
-		<el-row class="product-row">
+		<el-row
+			class="product-row"
+			style="padding-top: 3rem"
+		>
 			<el-col
 				:span="4"
 				:xs="12"

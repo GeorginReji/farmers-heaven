@@ -127,6 +127,7 @@ const handleCheckout = () => {
 .cart-wrapper {
 	background-color: #fffbf0;
 	gap: 5rem;
+	margin-top: 3rem;
 	padding: 5rem;
 	display: flex;
 	justify-content: center;
