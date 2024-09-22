@@ -18,7 +18,9 @@
 						<span>{{ product.name }}</span>
 					</div>
 					<p class="description">
-						{{ props.product.description }}
+						{{
+							props.product.description.substring(0, 100) + '...'
+						}}
 					</p>
 				</div>
 				<div class="btn-price">

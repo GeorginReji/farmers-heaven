@@ -3,19 +3,18 @@
 		<h1>About Us</h1>
 		<div class="container">
 			<div class="text-container">
-				<h3>Sub Heading 1</h3>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
-				quos architecto eos qui culpa, nesciunt, accusamus placeat nobis
-				sapiente labore doloremque sed facere vel consequatur quae
-				minus. Vel veniam totam amet quis aut, atque voluptatibus nam
-				sequi laborum cupiditate. Non, facere eaque. Porro quasi iste
-				voluptatibus officiis placeat dignissimos excepturi consectetur
-				aliquam? Magnam voluptatum officia dolore ducimus dicta quos
-				dignissimos quaerat ad, vitae illo? Laudantium quo sed beatae
-				minima et animi ipsum dicta vitae. Voluptatum fugit minus iste
-				similique architecto saepe repellat delectus maxime accusamus,
-				ullam nulla odio laborum nihil, expedita ab autem fugiat
-				dignissimos! Rerum ipsa a quos mollitia.
+				<h3>Who are we?</h3>
+				At The Farmer's Haven, we celebrate the heart and soul of
+				farming. Born from a passion for fresh, local produce, our brand
+				connects farmers with communities, ensuring every product tells
+				a story of dedication and sustainability. We believe in
+				preserving the land and nurturing relationships, offering
+				farm-fresh goods that reflect the purity and richness of Idukki
+				- The Spice garden of Kerala. Each item on our shelves embodies
+				the care and craftsmanship of our dedicated farmers,
+				transforming everyday meals into a tribute to the land. At The
+				Farmer's Haven, we’re not just selling food—we’re fostering a
+				movement towards a healthier, more connected world.
 			</div>
 			<div class="image-container">
 				<img
@@ -26,42 +25,18 @@
 		</div>
 		<div class="container2">
 			<div class="text-container">
-				<h3>Sub Heading 2</h3>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
-				quos architecto eos qui culpa, nesciunt, accusamus placeat nobis
-				sapiente labore doloremque sed facere vel consequatur quae
-				minus. Vel veniam totam amet quis aut, atque voluptatibus nam
-				sequi laborum cupiditate. Non, facere eaque. Porro quasi iste
-				voluptatibus officiis placeat dignissimos excepturi consectetur
-				aliquam? Magnam voluptatum officia dolore ducimus dicta quos
-				dignissimos quaerat ad, vitae illo? Laudantium quo sed beatae
-				minima et animi ipsum dicta vitae. Voluptatum fugit minus iste
-				similique architecto saepe repellat delectus maxime accusamus,
-				ullam nulla odio laborum nihil, expedita ab autem fugiat
-				dignissimos! Rerum ipsa a quos mollitia.
-			</div>
-			<div class="image-container">
-				<img
-					src="https://images.unsplash.com/photo-1591801058986-9e28e68670f7?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-					alt=""
-				/>
-			</div>
-		</div>
-		<div class="container">
-			<div class="text-container">
-				<h3>Sub Heading 3</h3>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
-				quos architecto eos qui culpa, nesciunt, accusamus placeat nobis
-				sapiente labore doloremque sed facere vel consequatur quae
-				minus. Vel veniam totam amet quis aut, atque voluptatibus nam
-				sequi laborum cupiditate. Non, facere eaque. Porro quasi iste
-				voluptatibus officiis placeat dignissimos excepturi consectetur
-				aliquam? Magnam voluptatum officia dolore ducimus dicta quos
-				dignissimos quaerat ad, vitae illo? Laudantium quo sed beatae
-				minima et animi ipsum dicta vitae. Voluptatum fugit minus iste
-				similique architecto saepe repellat delectus maxime accusamus,
-				ullam nulla odio laborum nihil, expedita ab autem fugiat
-				dignissimos! Rerum ipsa a quos mollitia.
+				<h3>Why choose The Farmer's Haven?</h3>
+				Choose The Farmer's Haven for an authentic farm-to-table
+				experience that champions quality and sustainability. Our
+				commitment to partnering with local farmers ensures you receive
+				the freshest, most flavorful produce while supporting ethical
+				farming practices. With every purchase, you’re investing in a
+				healthier lifestyle and a stronger community. Our products are
+				more than just food—they’re a testament to the care,
+				craftsmanship, and passion of those who grow them. By choosing
+				us, you’re not only enjoying superior quality but also
+				contributing to a movement that values integrity and connection
+				in every bite.
 			</div>
 			<div class="image-container">
 				<img
