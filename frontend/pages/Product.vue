@@ -48,37 +48,20 @@
 		</div>
 		<div class="details-container">
 			<div class="title">
-				<h1>Product title</h1>
-				<h3>₹100 - ₹700</h3>
+				<h1>{{ productById.name }}</h1>
+				<h3>₹{{ selectedPrice }}</h3>
 			</div>
 			<div class="description">
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum
-				praesentium tenetur mollitia ratione rem sequi voluptas maiores,
-				dolor eius dicta deleniti quibusdam quas consequuntur, qui ab
-				aperiam, officiis odio accusamus. Lorem ipsum dolor, sit amet
-				consectetur adipisicing elit. Ipsum praesentium tenetur mollitia
-				ratione rem sequi voluptas maiores, dolor eius dicta deleniti
-				quibusdam quas consequuntur, qui ab aperiam, officiis odio
-				accusamus.
+				<p>{{ productById.description }}</p>
 			</div>
-			<el-radio-group v-model="quantityRadio">
+			<el-radio-group v-model="selectedItem">
 				<el-radio
+					v-for="item in productById.items"
+					:key="item.id"
 					value="1"
 					size="large"
 					border
-					>200 g</el-radio
-				>
-				<el-radio
-					value="2"
-					size="large"
-					border
-					>500g</el-radio
-				>
-				<el-radio
-					value="3"
-					size="large"
-					border
-					>1kg</el-radio
+					>{{ item.quantity }}</el-radio
 				>
 			</el-radio-group>
 			<div class="button-wrapper">
@@ -112,15 +95,22 @@ const productStore = useProductStore();
 
 const productById = ref(null);
 const currImage = ref('');
-const quantityRadio = ref('1');
 const count = ref(1);
 const imageListRef = ref(null);
+
+const selectedItem = ref(null);
+const selectedPrice = computed(() => {
+	return selectedItem.value
+		? selectedItem.value.price
+		: productById.value?.price;
+});
 
 const productId = router.query.id;
 onMounted(async () => {
 	if (productId) {
 		productById.value = await productStore.getProductById(productId);
 		currImage.value = imageUrl(productById.value.images[0]);
+		selectedItem.value = productById.value.items[0];
 		console.log('product in id', productById.value, productId);
 	}
 });

@@ -34,6 +34,8 @@
 	align-items: center;
 	justify-content: center;
 	gap: 50px;
+	width: 100%;
+	background-color: white;
 	.el-menu-item {
 		img {
 			min-width: 100%;

@@ -54,10 +54,7 @@
 			class="top-bar-logo"
 			@click="() => navigateTo({ path: '/' })"
 		>
-			<img
-				style="height: 70px; width: 70px; margin-left: 60px"
-				src="~/assets/images/TFH_logo.png"
-			/>
+			<img src="~/assets/images/TFH_logo.png" />
 		</div>
 		<div class="login-icons">
 			<!-- List content goes here -->
@@ -73,9 +70,9 @@
 				</el-button>
 				<template #dropdown>
 					<el-dropdown-menu>
-						<el-dropdown-item v-if="authenticated"
-							>Profile</el-dropdown-item
-						>
+						<el-dropdown-item v-if="authenticated">{{
+							userDetails.user.first_name
+						}}</el-dropdown-item>
 						<el-dropdown-item v-if="authenticated"
 							>Settings</el-dropdown-item
 						>
@@ -133,7 +130,7 @@ const cartStore = useCartStore();
 
 const drawer = ref(false);
 const authStore = useAuthStore();
-const { authenticated } = storeToRefs(authStore);
+const { authenticated, userDetails } = storeToRefs(authStore);
 </script>
 
 <style lang="scss">
@@ -143,8 +140,7 @@ const { authenticated } = storeToRefs(authStore);
 	align-items: center;
 	font-size: 2.5rem;
 	background-color: #663b2f;
-	max-height: 50px;
-	z-index: 1000;
+	width: 100%;
 	.menu-items {
 		display: none;
 		.menu-icon-container {
@@ -177,7 +173,6 @@ const { authenticated } = storeToRefs(authStore);
 	}
 	.top-bar-logo {
 		display: none;
-		margin-top: 24px;
 	}
 	.social-media {
 		display: flex;
@@ -227,7 +222,12 @@ const { authenticated } = storeToRefs(authStore);
 			display: none;
 		}
 		.top-bar-logo {
-			display: block;
+			display: flex;
+			img {
+				height: 70px;
+				width: 70px;
+				margin-left: 60px;
+			}
 		}
 		.menu-items {
 			display: block;
