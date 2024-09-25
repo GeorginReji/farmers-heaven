@@ -11,7 +11,6 @@ export const useAuthStore = defineStore('auth', {
 		loadFromLocalStorage() {
 			if (process.client) {
 				const storedUserDetails = localStorage.getItem('authDetails');
-				console.log('storedUserDetails', JSON.parse(storedUserDetails));
 
 				this.authenticated = !!storedUserDetails;
 				this.userDetails = storedUserDetails
@@ -30,6 +29,7 @@ export const useAuthStore = defineStore('auth', {
 			});
 			console.log('redirect url', data);
 			await navigateTo(data.url, { external: true });
+			// navigateTo({ path: '/' });
 		},
 
 		async autUser(code) {

@@ -1,3 +1,4 @@
 {
-	"cSpell.words": ["supabase"]
+	"prettier.singleAttributePerLine": true,
+	"prettier.singleQuote": true
 }

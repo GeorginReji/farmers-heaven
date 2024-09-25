@@ -6,7 +6,7 @@
 	</div>
 	<div class="product-row">
 		<el-divider />
-		<h2>Most ordered products</h2>
+		<h2>Bestsellers products</h2>
 		<el-row :gutter="20">
 			<el-col
 				:span="5"
