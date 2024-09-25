@@ -6,14 +6,17 @@ export const useProductStore = defineStore({
 	state: () => {
 		return {
 			productsList: [],
+			isLoading: false,
 		};
 	},
 	actions: {
 		async getProducts() {
+			this.isLoading = true;
 			const list = await $fetch(`${getApiBaseUrl()}admin/products/`, {
 				method: 'GET',
 			});
 			this.productsList = list.results;
+			this.isLoading = false;
 		},
 	},
 	getters: {
@@ -25,7 +28,7 @@ export const useProductStore = defineStore({
 			const product = state.productsList.find(
 				(product) => product.id === numericId
 			);
-			return product;
+			return product || null;
 		},
 	},
 });

@@ -23,12 +23,14 @@ export const useCartStore = defineStore('cart', {
 		saveToLocalStorage() {
 			localStorage.setItem('cart', JSON.stringify(this.cartList));
 		},
-
+		// Add an Item to the cart
 		addItem(item, count) {
-			console.log('add item cart list', this.cartList);
+			console.log('add item cart list', item);
 
 			const existingItemIndex = this.cartList.findIndex(
-				(product) => product.id === item.id
+				(product) =>
+					product.id === item.id &&
+					product.product_item_data.id === item.product_item_data.id
 			);
 
 			if (existingItemIndex === -1) {
@@ -47,38 +49,41 @@ export const useCartStore = defineStore('cart', {
 				this.createCart({
 					product: item.id,
 					quantity: count,
+					product_item: item.product_item_data.id,
 				});
 			}
 		},
-		updateItemCount(id, productId, newCount) {
-			console.log('Increment count', productId, newCount);
+		updateItemCount(id, quantityId, newCount) {
+			console.log('Increment count', quantityId, newCount);
 
 			if (this.cartList.length) {
 				this.saveToLocalStorage();
 				if (this.authStore.authenticated)
 					this.updateCart({
 						id: id,
-						product: productId,
+						product_item: quantityId,
 						quantity: newCount,
 						is_active: true,
 					});
 			}
 		},
-		async removeItem(product) {
-			console.log('Remove cart', this.cartList, product.id);
 
+		async removeItem(product) {
 			this.cartList = this.cartList.filter(
-				(item) => item.id !== product.id
+				(item) =>
+					item.id !== product.id ||
+					item.product_item_data.id !== product.product_item_data.id
 			);
+
 			this.saveToLocalStorage();
-			// TODO remove item API check
 			if (this.authStore.authenticated)
 				await this.updateCart({
 					id: product.id,
-					product: product.product,
+					product_item: product.product_item_data.id,
 					is_active: false,
 				});
 		},
+
 		async loadFromStorage() {
 			if (this.authStore.authenticated) {
 				this.fetchCart();
@@ -86,7 +91,7 @@ export const useCartStore = defineStore('cart', {
 				this.loadFromLocalStorage();
 			}
 		},
-		// TODO: create a custom composable for API calls.
+
 		async createCart(item) {
 			try {
 				await $fetch(`${getApiBaseUrl()}orders/cart/`, {
@@ -118,7 +123,6 @@ export const useCartStore = defineStore('cart', {
 					...item.product_data,
 				}));
 
-				// Log a copy of the formatted cart data to avoid the proxy
 				console.log('cart before mapping:', data);
 
 				this.cartList = formattedCartData;

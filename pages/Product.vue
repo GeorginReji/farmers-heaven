@@ -49,16 +49,16 @@
 		<div class="details-container">
 			<div class="title">
 				<h1>{{ productById.name }}</h1>
-				<h3>₹{{ selectedItem }}</h3>
+				<h3>₹{{ selectedQuantity.price }}</h3>
 			</div>
 			<div class="description">
 				<p>{{ productById.description }}</p>
 			</div>
-			<el-radio-group v-model="selectedItem">
+			<el-radio-group v-model="selectedItemId">
 				<el-radio
 					v-for="item in productById.items"
 					:key="item.id"
-					:value="item.price"
+					:value="item.id"
 					size="large"
 					border
 					>{{ item.name }}</el-radio
@@ -73,9 +73,12 @@
 				<el-button
 					type="success"
 					class="button"
-					@click="cartStore.addItem(productById, 1)"
-					>Add to <i class="ri-shopping-cart-line"></i
-				></el-button>
+					@click="handlePlaceOrder"
+				>
+					<el-text style="color: #ffff"
+						>Add to <i class="ri-shopping-cart-line"
+					/></el-text>
+				</el-button>
 			</div>
 		</div>
 	</div>
@@ -98,23 +101,31 @@ const currImage = ref('');
 const count = ref(1);
 const imageListRef = ref(null);
 
-const selectedItem = ref(null);
-// const selectedPrice = computed(() => {
-// 	console.log(selectedItem.value);
-// 	return selectedItem.value
-// 		? selectedItem.value.price
-// 		: productById.value?.price;
-// });
+const selectedItemId = ref(null);
 
 const productId = router.query.id;
 onMounted(async () => {
 	if (productId) {
-		productById.value = await productStore.getProductById(productId);
-		currImage.value = imageUrl(productById.value.images[0]);
-		selectedItem.value = productById.value.items[0].price;
-		console.log('product in id', productById.value, productId);
+		const product = await productStore.getProductById(productId);
+		productById.value = product;
+		currImage.value = imageUrl(product.images[0]);
+		selectedItemId.value = product.items[0].id;
+		console.log('product in id', product);
 	}
 });
+const selectedQuantity = computed(() => {
+	return productById.value.items.find(
+		(item) => item.id === selectedItemId.value
+	);
+});
+
+const handlePlaceOrder = () => {
+	cartStore.addItem(
+		{ ...productById.value, product_item_data: selectedQuantity.value },
+		1
+	);
+};
+
 const imageUrl = (product) => {
 	return `${config.public.imageBase + product.download_url}`;
 };

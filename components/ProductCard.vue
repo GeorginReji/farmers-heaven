@@ -24,12 +24,12 @@
 					</p>
 				</div>
 				<div class="btn-price">
-					<span>₹250</span>
+					<span>₹{{ props.product.items[0].price }}</span>
 					<div class="bottom">
 						<el-button
 							type="success"
 							class="button"
-							@click="cartStore.addItem(props.product, 1)"
+							@click="handlePlaceOrder"
 							>Add to <i class="ri-shopping-cart-line"></i
 						></el-button>
 					</div>
@@ -48,6 +48,13 @@ const config = useRuntimeConfig();
 const props = defineProps({
 	product: Object,
 });
+
+const handlePlaceOrder = () => {
+	cartStore.addItem(
+		{ ...props.product, product_item_data: props.product.items[0] },
+		1
+	);
+};
 
 const imageUrl = computed(() => {
 	return `${config.public.imageBase + props.product.thumbnail.download_url}`;
