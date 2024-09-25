@@ -49,7 +49,7 @@
 		<div class="details-container">
 			<div class="title">
 				<h1>{{ productById.name }}</h1>
-				<h3>₹{{ selectedPrice }}</h3>
+				<h3>₹{{ selectedItem }}</h3>
 			</div>
 			<div class="description">
 				<p>{{ productById.description }}</p>
@@ -58,10 +58,10 @@
 				<el-radio
 					v-for="item in productById.items"
 					:key="item.id"
-					value="1"
+					:value="item.price"
 					size="large"
 					border
-					>{{ item.quantity }}</el-radio
+					>{{ item.name }}</el-radio
 				>
 			</el-radio-group>
 			<div class="button-wrapper">
@@ -99,18 +99,19 @@ const count = ref(1);
 const imageListRef = ref(null);
 
 const selectedItem = ref(null);
-const selectedPrice = computed(() => {
-	return selectedItem.value
-		? selectedItem.value.price
-		: productById.value?.price;
-});
+// const selectedPrice = computed(() => {
+// 	console.log(selectedItem.value);
+// 	return selectedItem.value
+// 		? selectedItem.value.price
+// 		: productById.value?.price;
+// });
 
 const productId = router.query.id;
 onMounted(async () => {
 	if (productId) {
 		productById.value = await productStore.getProductById(productId);
 		currImage.value = imageUrl(productById.value.images[0]);
-		selectedItem.value = productById.value.items[0];
+		selectedItem.value = productById.value.items[0].price;
 		console.log('product in id', productById.value, productId);
 	}
 });
@@ -152,8 +153,8 @@ const scrollPrev = () => {
 				gap: 10px;
 				overflow-x: auto;
 				scrollbar-width: none;
-				position: relative; // Add this line to position buttons relative to this container
-				padding: 0 20px; // Add padding to create space for the buttons inside the container
+				position: relative;
+				padding: 0 20px;
 				.el-image {
 					min-height: 100px;
 					min-width: 120px;

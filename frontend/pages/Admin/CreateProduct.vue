@@ -34,11 +34,11 @@
 			>
 				<el-form-item
 					:label="`Quantity ${index + 1}`"
-					:prop="`items.${index}.quantity`"
-					:rules="rules.quantity"
+					:prop="`items.${index}.name`"
+					:rules="rules.name"
 				>
 					<el-input
-						v-model="item.quantity"
+						v-model="item.name"
 						:min="0"
 						:precision="0"
 					/>
@@ -56,7 +56,7 @@
 					size="small"
 					:disabled="ruleForm.items.length === 1"
 				>
-					Remove
+					<el-icon><i class="ri-delete-bin-line"></i></el-icon>
 				</el-button>
 			</div>
 
@@ -65,7 +65,9 @@
 					@click="addDynamicField"
 					:disabled="ruleForm.items.length >= 4"
 				>
-					Add Price/Quantity
+					<el-text size="small"
+						><i class="ri-add-line"></i>Price/Quantity</el-text
+					>
 				</el-button>
 			</el-form-item>
 
@@ -156,6 +158,7 @@ const fileList = ref([]);
 
 definePageMeta({
 	middleware: 'default',
+	layout: 'admin-layout',
 });
 
 const handleChange = async (file) => {
@@ -188,7 +191,7 @@ const ruleForm = reactive({
 	title: '',
 	isInStock: true,
 	desc: '',
-	items: [{ price: 0, quantity: 0 }],
+	items: [{ price: 0, name: '' }],
 	images: [],
 });
 
@@ -206,7 +209,7 @@ const rules = {
 			trigger: 'blur',
 		},
 	],
-	quantity: [
+	name: [
 		{
 			required: true,
 			message: 'Please input quantity',
@@ -267,7 +270,7 @@ const submitForm = async (formEl) => {
 			const formattedData = {
 				items: ruleForm.items.map((item) => ({
 					price: Number(item.price),
-					quantity: item.quantity,
+					name: item.name,
 					is_active: true,
 				})),
 				images: fileList.value.map((file, index) => ({
@@ -313,13 +316,14 @@ const resetForm = (formEl) => {
 	padding: 0 10% 0 10%;
 	.dynamic-field-group {
 		display: flex;
-		align-items: flex-start;
-		margin-bottom: 20px;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 
-	.dynamic-field-group .el-form-item {
+	/*.dynamic-field-group .el-form-item {
 		margin-right: 20px;
 		margin-bottom: 0;
-	}
+	} */
 }
 </style>
