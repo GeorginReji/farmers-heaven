@@ -25,7 +25,10 @@
 						<div class="cart-product-details">
 							<div class="name">
 								<p>{{ product.name }}</p>
-								<span>Quantity: 500g</span>
+								<span
+									>Quantity:
+									{{ product.product_item_data.name }}</span
+								>
 							</div>
 							<el-input-number
 								v-model="product.count"
@@ -33,13 +36,20 @@
 									() =>
 										cartStore.updateItemCount(
 											product.id,
-											product.product,
+											product.product_item_data.id,
 											product.count
 										)
 								"
 								:min="1"
 							/>
-							<h3>{{ `₹${product.price * product.count}` }}</h3>
+							<h3>
+								{{
+									`₹${
+										product.product_item_data.price *
+										product.count
+									}`
+								}}
+							</h3>
 							<el-button
 								circle
 								@click="cartStore.removeItem(product)"
@@ -62,10 +72,10 @@
 		>
 			<h2>Order Summary</h2>
 			<div class="row">
-				<p>Subtotal</p>
+				<p>Total</p>
 				<h3>{{ `₹${subTotal}` }}</h3>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				<p>Delivery Fee</p>
 				<h3>₹100</h3>
 			</div>
@@ -77,7 +87,7 @@
 			<div class="row">
 				<p>Total</p>
 				<h3>₹810</h3>
-			</div>
+			</div> -->
 			<el-button
 				style="margin: 0 auto"
 				type="success"
@@ -110,7 +120,7 @@ const imageUrl = (productImgUrl) => {
 
 const subTotal = computed(() => {
 	return cartStore.cartList.reduce(
-		(total, item) => total + item.price * item.count,
+		(total, item) => total + item.product_item_data.price * item.count,
 		0
 	);
 });
