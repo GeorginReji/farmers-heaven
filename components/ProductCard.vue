@@ -63,8 +63,9 @@ const imageUrl = computed(() => {
 
 <style lang="scss">
 .product-card-wrapper {
-	min-width: 10px;
-	min-height: 200px;
+	// min-width: 10px;
+	// min-height: 200px;
+	margin-bottom: 16px;
 	.el-card__body {
 		display: flex;
 		align-items: center;
