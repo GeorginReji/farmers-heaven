@@ -59,7 +59,7 @@
 					v-for="item in productById.items"
 					:key="item.id"
 					:value="item.id"
-					size="large"
+					size="small"
 					border
 					>{{ item.name }}</el-radio
 				>
