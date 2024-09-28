@@ -1,8 +1,13 @@
-import { useRuntimeConfig } from 'nuxt/app'
+import { useRuntimeConfig } from 'nuxt/app';
+
+const config = useRuntimeConfig();
 
 const getApiBaseUrl = () => {
-    const config = useRuntimeConfig()
-    return config.public.apiBase
-  }
+	return config.public.apiBase;
+};
 
-export { getApiBaseUrl }
+const getImageUrl = (product) => {
+	return `${config.public.imageBase + product.download_url}`;
+};
+
+export { getApiBaseUrl, getImageUrl };

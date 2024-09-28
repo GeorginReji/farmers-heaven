@@ -38,7 +38,7 @@ export const useCartStore = defineStore('cart', {
 			} else {
 				this.cartList[existingItemIndex] = {
 					...this.cartList[existingItemIndex],
-					count: this.cartList[existingItemIndex].count + count,
+					count: count,
 				};
 			}
 

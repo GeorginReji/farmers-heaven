@@ -66,6 +66,21 @@ export const useProductStore = defineStore({
 			this.productsList = list.results;
 			this.isLoading = false;
 		},
+		// Update Products
+		async updateProduct(product) {
+			try {
+				await $fetch(`${getApiBaseUrl()}admin/products/`, {
+					method: 'PUT',
+					headers: {
+						Authorization: `Bearer ${this.authStore.userDetails.access}`,
+					},
+					body: JSON.stringify(product),
+				});
+				ElMessage.success('product updated successfully');
+			} catch (error) {
+				console.error('Error creating cart to API:', error);
+			}
+		},
 	},
 	getters: {
 		authStore() {

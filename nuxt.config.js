@@ -8,7 +8,7 @@ export default defineNuxtConfig({
 		},
 	},
 
-	devtools: { enabled: true },
+	devtools: { enabled: false },
 	vite: {
 		css: {
 			preprocessorOptions: {
