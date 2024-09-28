@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
 	<div class="cart-wrapper">
 		<div class="cart-table">
@@ -27,15 +25,15 @@
 								<p>{{ product.name }}</p>
 								<span
 									>Quantity:
-									{{ product.product_item_data.name }}</span
-								>
+									{{ product.product_item_data.name }}
+								</span>
 							</div>
 							<el-input-number
 								v-model="product.count"
 								@change="
 									() =>
 										cartStore.updateItemCount(
-											product.id,
+											product.product,
 											product.product_item_data.id,
 											product.count
 										)

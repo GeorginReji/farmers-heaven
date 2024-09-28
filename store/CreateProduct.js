@@ -10,13 +10,8 @@ export const useCreateProductStore = defineStore({
 		};
 	},
 	actions: {
+		// Uploading product images with preassigned URL.
 		async uploadFile(file) {
-			console.log(
-				'upload action called',
-				this.authStore.userDetails.access,
-				file,
-				file.raw.type
-			);
 			return $fetch(`${getApiBaseUrl()}uploads/presigned_url/`, {
 				method: 'POST',
 				headers: {
@@ -29,14 +24,12 @@ export const useCreateProductStore = defineStore({
 				},
 			})
 				.then((response) => {
-					console.log(response);
-
 					this.filePath.push(response.url);
 
 					// Second POST request using the URL from the first response
 					return $fetch(response.url, {
 						method: 'PUT',
-						body: file.raw, // Assuming file.raw contains the file data
+						body: file.raw,
 					});
 				})
 				.then((uploadResponse) => {
@@ -48,6 +41,7 @@ export const useCreateProductStore = defineStore({
 					throw error;
 				});
 		},
+		// Creating new Products
 		async addProducts(product) {
 			try {
 				await $fetch(`${getApiBaseUrl()}admin/products/`, {

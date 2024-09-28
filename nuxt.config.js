@@ -1,27 +1,36 @@
 export default defineNuxtConfig({
- ssr: false,
+	ssr: false,
 
- runtimeConfig: {
-					public: {
-									apiBase: process.env.DOMAIN_URL + 'fh-api/v1/',
-									imageBase: process.env.DOMAIN_URL + '/media/',
-					},
+	runtimeConfig: {
+		public: {
+			apiBase: process.env.DOMAIN_URL + 'fh-api/v1/',
+			imageBase: process.env.DOMAIN_URL + '/media/',
+		},
 	},
 
- devtools: { enabled: true },
+	devtools: { enabled: true },
+	vite: {
+		css: {
+			preprocessorOptions: {
+				scss: {
+					api: 'modern',
+				},
+			},
+		},
+	},
 
- css: [
-					'remixicon/fonts/remixicon.css',
-					'@/assets/scss/main.scss',
-					'@/assets/scss/elements-custom.scss',
+	css: [
+		'remixicon/fonts/remixicon.css',
+		'@/assets/scss/main.scss',
+		'@/assets/scss/elements-custom.scss',
 	],
 
- modules: ['@element-plus/nuxt', '@pinia/nuxt'],
- middleware: ['default'],
+	modules: ['@element-plus/nuxt', '@pinia/nuxt'],
+	middleware: ['default'],
 
- build: {
-					transpile: ['qs'],
+	build: {
+		transpile: ['qs'],
 	},
 
- compatibilityDate: '2024-09-27',
+	compatibilityDate: '2024-09-27',
 });

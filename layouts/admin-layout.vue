@@ -38,7 +38,7 @@
 			>
 				<el-menu
 					default-active="1"
-					router="true"
+					:router="true"
 					class="el-menu-vertical-demo"
 				>
 					<el-menu-item
@@ -104,6 +104,9 @@ onBeforeUnmount(() => {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
 	width: 200px;
 	min-height: 100%;
+}
+.el-drawer__body {
+	padding: 0;
 }
 .logo {
 	display: flex;

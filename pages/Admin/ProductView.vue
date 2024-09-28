@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<el-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+		<el-row :gutter="20">
 			<el-col
 				:xs="24"
 				:sm="{ span: 12, offset: 1 }"
