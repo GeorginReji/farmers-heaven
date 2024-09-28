@@ -25,7 +25,7 @@ definePageMeta({
 import { useProductStore } from '~/store/productStore';
 const productStore = useProductStore();
 const { productsList } = storeToRefs(productStore);
-onMounted(() => productStore.getProducts());
+onMounted(() => productStore.fetchProducts());
 </script>
 
 <style lang="scss"></style>

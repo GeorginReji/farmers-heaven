@@ -80,7 +80,7 @@
 					type="textarea"
 				/>
 			</el-form-item>
-			<!-- TODO: Upload file to server -->
+
 			<el-form-item label="Product Images">
 				<el-upload
 					list-type="picture-card"
@@ -148,9 +148,9 @@
 </template>
 
 <script setup>
-import { useCreateProductStore } from '@/store/CreateProduct';
+import { useProductStore } from '~/store/productStore';
 
-const { uploadFile, addProducts } = useCreateProductStore();
+const { uploadFile, createProducts } = useProductStore();
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
 const disabled = ref(false);
@@ -284,10 +284,8 @@ const submitForm = async (formEl) => {
 			console.log('Formatted form data:', formattedData);
 
 			try {
-				// Call the addProducts function from the store
-				await addProducts(formattedData);
+				await createProducts(formattedData);
 				ElMessage.success('Product created successfully');
-				// Optionally reset the form after successful submission
 				resetForm(formEl);
 			} catch (error) {
 				console.error('Error creating product:', error);

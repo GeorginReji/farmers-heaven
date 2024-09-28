@@ -1,75 +1,84 @@
 <template>
-	<el-table
-		border
-		table-layout="auto"
-		@selection-change="handleSelectionChange"
-	>
-		<el-table-column
-			type="selection"
-			width="50"
-		/>
-		<template v-for="tableColumn in tableColumns">
-			<el-table-column
-				v-if="tableColumn.Prop !== 'items'"
-				:fixed="tableColumn.fixed"
-				:prop="tableColumn.Prop"
-				:label="tableColumn.Label"
-				:min-width="tableColumn.minWidth"
-			/>
-			<el-table-column
-				v-if="tableColumn.Prop === 'items'"
-				:fixed="tableColumn.fixed"
-				:prop="tableColumn.Prop"
-				:label="tableColumn.Label"
-				:min-width="tableColumn.minWidth"
+	<el-container style="display: flex; flex-direction: column; gap: 2rem">
+		<el-container style="display: flex; justify-content: flex-end">
+			<el-button
+				@click="updateSelectedRows"
+				:disabled="selectedRows.length === 0"
+				style="margin-top: 20px"
 			>
-				<template #default="scope">
-					<el-table
-						:data="scope.row.items"
-						border
-					>
-						<el-table-column
-							prop="product_data"
-							label="Item Name"
-						/>
-						<el-table-column
-							prop="amount"
-							label="Amount"
-						/>
-						<el-table-column
-							prop="quantity"
-							label="Quantity"
-						/>
-					</el-table>
-				</template>
-			</el-table-column>
-		</template>
-
-		<!-- <el-table-column
-			fixed="right"
-			label="Operations"
-			min-width="120"
+				Update Status
+			</el-button>
+		</el-container>
+		<el-table
+			border
+			table-layout="auto"
+			@selection-change="handleSelectionChange"
+			:data="orderList"
 		>
-			<template #default>
-				<el-button
-					link
-					type="primary"
-					size="small"
-					>Status Update</el-button
+			<el-table-column
+				type="selection"
+				width="50"
+			/>
+			<template v-for="tableColumn in tableColumns">
+				<el-table-column
+					v-if="tableColumn.Prop !== 'items'"
+					:fixed="tableColumn.fixed"
+					:prop="tableColumn.Prop"
+					:label="tableColumn.Label"
+					:min-width="tableColumn.minWidth"
+				/>
+				<el-table-column
+					v-if="tableColumn.Prop === 'items'"
+					:fixed="tableColumn.fixed"
+					:prop="tableColumn.Prop"
+					:label="tableColumn.Label"
+					:min-width="tableColumn.minWidth"
 				>
+					<template #default="scope">
+						<el-table
+							:data="scope.row.items"
+							border
+						>
+							<el-table-column
+								prop="product_data"
+								label="Item Name"
+							/>
+							<el-table-column
+								prop="amount"
+								label="Amount"
+							/>
+							<el-table-column
+								prop="quantity"
+								label="Quantity"
+							/>
+						</el-table>
+					</template>
+				</el-table-column>
 			</template>
-		</el-table-column> -->
-	</el-table>
-	<el-button
-		@click="logSelectedRows"
-		:disabled="selectedRows.length === 0"
-		style="margin-top: 20px"
-	>
-		Log Selected Rows
-	</el-button>
+
+			<!-- <el-table-column
+				fixed="right"
+				label="Operations"
+				min-width="120"
+			>
+				<template #default>
+					<el-button
+						link
+						type="primary"
+						size="small"
+						>Status Update</el-button
+					>
+				</template>
+			</el-table-column> -->
+		</el-table>
+	</el-container>
 </template>
 
 <script setup>
+import { useOrderStore } from '@/store/OrderStore';
+const orderStore = useOrderStore();
+const { orderList } = storeToRefs(orderStore);
+
 definePageMeta({
 	middleware: 'default',
 	layout: 'admin-layout',
@@ -77,11 +86,13 @@ definePageMeta({
 
 const selectedRows = ref([]);
 
+onMounted(() => orderStore.fetchOrders());
+
 const handleSelectionChange = (val) => {
 	selectedRows.value = val;
 };
 
-const logSelectedRows = () => {
+const updateSelectedRows = () => {
 	console.log(selectedRows.value);
 };
 
