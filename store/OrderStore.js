@@ -24,7 +24,7 @@ export const useOrderStore = defineStore({
 						},
 					}
 				);
-				this.orderList = list;
+				this.orderList = list.results;
 			} catch (error) {
 				ElMessage.error('Order fetch error');
 				console.log(error);

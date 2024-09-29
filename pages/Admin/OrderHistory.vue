@@ -27,7 +27,7 @@
 					:label="tableColumn.Label"
 					:min-width="tableColumn.minWidth"
 				/>
-				<el-table-column
+				<!-- <el-table-column
 					v-if="tableColumn.Prop === 'items'"
 					:fixed="tableColumn.fixed"
 					:prop="tableColumn.Prop"
@@ -53,6 +53,47 @@
 							/>
 						</el-table>
 					</template>
+				</el-table-column> -->
+				<el-table-column
+					v-if="tableColumn.Prop === 'items'"
+					:fixed="tableColumn.fixed"
+					:prop="tableColumn.Prop"
+					:label="tableColumn.Label"
+					:min-width="tableColumn.minWidth"
+				>
+					<el-table-column label="Item name">
+						<template #default="scope">
+							<div
+								v-for="(item, index) in scope.row.items"
+								:key="index"
+								class="item-cell"
+							>
+								{{ item.product_data }}
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="Quantity">
+						<template #default="scope">
+							<div
+								v-for="(item, index) in scope.row.items"
+								:key="index"
+								class="item-cell"
+							>
+								{{ item.amount }}
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="Quantity">
+						<template #default="scope">
+							<div
+								v-for="(item, index) in scope.row.items"
+								:key="index"
+								class="item-cell"
+							>
+								{{ item.quantity }}
+							</div>
+						</template>
+					</el-table-column>
 				</el-table-column>
 			</template>
 
@@ -124,4 +165,13 @@ const tableColumns = [
 ];
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.item-cell {
+	padding: 5px 0;
+	border-bottom: 1px solid #ebeef5;
+}
+
+.item-cell:last-child {
+	border-bottom: none;
+}
+</style>
