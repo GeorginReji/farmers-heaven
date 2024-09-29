@@ -151,7 +151,7 @@
 import { useProductStore } from '~/store/productStore';
 import { getImageUrl } from '~/utils/utils';
 
-const { uploadFile } = useProductStore();
+const productStore = useProductStore();
 
 // Define props
 const props = defineProps({
@@ -184,13 +184,14 @@ const dialogImageUrl = ref(''); //preview image url
 const dialogVisible = ref(false); //Image preview dialog visible
 const disabled = ref(false); //remove attachment disabled
 const fileList = ref([]); //Attachment file list
-
+const fileIndex = ref(0); //Attachment unique Id to remove
 // Upload image to temporary storage.
 const handleChange = async (file) => {
 	console.log('File Name:', file.name, 'File Type', file.raw.type);
 	try {
-		await uploadFile(file);
+		await productStore.uploadFile(file, fileIndex.value);
 		ElMessage.success('File uploaded successfully');
+		fileIndex.value++;
 	} catch (error) {
 		console.error('Upload failed:', error);
 		ElMessage.error('Upload failed');
@@ -318,10 +319,6 @@ const submitForm = async (formEl) => {
 					price: Number(item.price),
 					name: item.name,
 					is_active: true,
-				})),
-				images: fileList.value.map((file, index) => ({
-					image: file.name,
-					is_thumbnail: index === 0,
 				})),
 				name: ruleForm.title,
 				description: ruleForm.desc,
