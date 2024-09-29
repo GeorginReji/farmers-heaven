@@ -25,12 +25,12 @@
 				>
 					<el-image
 						v-for="(productImg, index) in productById.images"
-						:src="imageUrl(productImg)"
+						:src="getImageUrl(productImg)"
 						alt="Slide Image"
 						style="width: 100px; height: 100px"
 						@click="
 							() =>
-								(currImage = imageUrl(
+								(currImage = getImageUrl(
 									productById.images[index]
 								))
 						"
@@ -90,6 +90,7 @@ definePageMeta({
 });
 import { useProductStore } from '@/store/productStore';
 import { useCartStore } from '~/store/cartStore';
+import { getImageUrl } from '~/utils/utils';
 
 const cartStore = useCartStore();
 const router = useRoute();
@@ -108,7 +109,7 @@ onMounted(async () => {
 	if (productId) {
 		const product = await productStore.getProductById(productId);
 		productById.value = product;
-		currImage.value = imageUrl(product.images[0]);
+		currImage.value = getImageUrl(product.images[0]);
 		selectedItemId.value = product.items[0].id;
 		console.log('product in id', product);
 	}
@@ -124,10 +125,6 @@ const handlePlaceOrder = () => {
 		{ ...productById.value, product_item_data: selectedQuantity.value },
 		1
 	);
-};
-
-const imageUrl = (product) => {
-	return `${config.public.imageBase + product.download_url}`;
 };
 
 const scrollNext = () => {

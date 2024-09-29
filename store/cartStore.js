@@ -38,7 +38,7 @@ export const useCartStore = defineStore('cart', {
 			} else {
 				this.cartList[existingItemIndex] = {
 					...this.cartList[existingItemIndex],
-					count: this.cartList[existingItemIndex].count + count,
+					count: count,
 				};
 			}
 
@@ -54,13 +54,13 @@ export const useCartStore = defineStore('cart', {
 			}
 		},
 		updateItemCount(id, quantityId, newCount) {
-			console.log('Increment count', quantityId, newCount);
+			console.log('Increment count', id, quantityId, newCount);
 
 			if (this.cartList.length) {
 				this.saveToLocalStorage();
 				if (this.authStore.authenticated)
 					this.updateCart({
-						id: id,
+						product: id,
 						product_item: quantityId,
 						quantity: newCount,
 						is_active: true,
@@ -78,7 +78,7 @@ export const useCartStore = defineStore('cart', {
 			this.saveToLocalStorage();
 			if (this.authStore.authenticated)
 				await this.updateCart({
-					id: product.id,
+					product: product.id,
 					product_item: product.product_item_data.id,
 					is_active: false,
 				});
@@ -121,6 +121,7 @@ export const useCartStore = defineStore('cart', {
 					product: item.product,
 					count: item.quantity,
 					...item.product_data,
+					product_item_data: item.product_item_data,
 				}));
 
 				console.log('cart before mapping:', data);

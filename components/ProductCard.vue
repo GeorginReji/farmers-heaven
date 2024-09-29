@@ -40,11 +40,10 @@
 </template>
 
 <script setup>
-import { useRuntimeConfig } from 'nuxt/app';
 import { useCartStore } from '~/store/cartStore';
+import { getImageUrl } from '~/utils/utils';
 
 const cartStore = useCartStore();
-const config = useRuntimeConfig();
 const props = defineProps({
 	product: Object,
 });
@@ -56,9 +55,7 @@ const handlePlaceOrder = () => {
 	);
 };
 
-const imageUrl = computed(() => {
-	return `${config.public.imageBase + props.product.thumbnail.download_url}`;
-});
+const imageUrl = computed(() => getImageUrl(props.product.thumbnail));
 </script>
 
 <style lang="scss">

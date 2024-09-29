@@ -32,7 +32,7 @@ import { useProductStore } from '@/store/productStore';
 const dataStore = useProductStore();
 const { productsList } = storeToRefs(dataStore);
 onMounted(() => {
-	dataStore.getProducts();
+	dataStore.fetchProducts();
 });
 </script>
 
