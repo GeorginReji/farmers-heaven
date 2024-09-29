@@ -4,7 +4,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			apiBase: process.env.DOMAIN_URL + 'fh-api/v1/',
-			imageBase: process.env.DOMAIN_URL + '/media/',
+			imageBase: process.env.DOMAIN_URL + 'media/',
 		},
 	},
 

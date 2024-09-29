@@ -9,16 +9,26 @@
 <script setup>
 import { useProductStore } from '~/store/productStore';
 
-const { updateProduct, fetchProduct } = useProductStore();
+definePageMeta({
+	middleware: 'default',
+	layout: 'admin-layout',
+});
+
+const route = useRoute();
+const { updateProduct, getProductById } = useProductStore();
 
 const existingProduct = ref({});
 
-const productId = router.query.id;
+const productId = route.query.id;
+
 onMounted(async () => {
-	if (productId) existingProduct.value = await fetchProduct(productId);
+	if (productId) {
+		existingProduct.value = await getProductById(productId);
+	}
 });
 
 const handleUpdateProduct = async (formData) => {
 	await updateProduct(formData);
+	navigateTo('/admin/ProductView');
 };
 </script>

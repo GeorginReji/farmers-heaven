@@ -178,6 +178,8 @@ const ruleForm = reactive({
 	images: [],
 });
 
+const ruleFormRef = ref();
+
 const dialogImageUrl = ref(''); //preview image url
 const dialogVisible = ref(false); //Image preview dialog visible
 const disabled = ref(false); //remove attachment disabled
