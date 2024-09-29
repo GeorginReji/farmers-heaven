@@ -1,12 +1,12 @@
 <template>
-	<div class="layout">
-		<div class="navbar-section">
-			<topbar />
+	<el-container class="layout">
+		<el-header class="navbar-section">
+			<!-- <topbar /> -->
 			<navbar />
-		</div>
-		<div class="hero-section">
+		</el-header>
+		<el-main class="hero-section">
 			<slot />
-		</div>
+		</el-main>
 		<div class="whats-app-container">
 			<a href="https://wa.me/8281560102">
 				<i class="ri-whatsapp-line"></i>
@@ -15,7 +15,7 @@
 		<div class="footer-section">
 			<navFooter />
 		</div>
-	</div>
+	</el-container>
 </template>
 
 <script setup></script>
@@ -38,6 +38,7 @@
 	.hero-section {
 		padding-top: 120px;
 		width: 100%;
+		background-color: #fffbf0;
 	}
 	.whats-app-container {
 		position: fixed;
