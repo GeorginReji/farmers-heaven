@@ -4,14 +4,14 @@
 
 <script setup>
 import { useProductStore } from '~/store/productStore';
-const { createProducts } = useProductStore();
-
+const productStore = useProductStore();
+const { fileNames } = storeToRefs(productStore);
 definePageMeta({
 	middleware: 'default',
 	layout: 'admin-layout',
 });
 
 const createProduct = async (formData) => {
-	await createProducts(formData);
+	await productStore.createProducts({ ...formData, images: fileNames });
 };
 </script>

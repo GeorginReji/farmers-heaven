@@ -8,11 +8,12 @@ export const useProductStore = defineStore({
 		return {
 			productsList: [],
 			isLoading: false,
+			fileNames: [],
 		};
 	},
 	actions: {
 		// Uploading product images with preassigned URL.
-		async uploadFile(file) {
+		async uploadFile(file, index) {
 			return $fetch(`${getApiBaseUrl()}uploads/presigned_url/`, {
 				method: 'POST',
 				headers: {
@@ -26,6 +27,12 @@ export const useProductStore = defineStore({
 			})
 				.then((response) => {
 					// Second POST request using the URL from the first response
+					console.log('Preassigned url res', response, index);
+
+					this.fileNames.push({
+						id: index,
+						fileName: response.file_name,
+					});
 					return $fetch(response.url, {
 						method: 'PUT',
 						body: file.raw,
@@ -40,9 +47,18 @@ export const useProductStore = defineStore({
 					throw error;
 				});
 		},
-
+		// Remove file from state
+		removeFile(fileId) {
+			this.fileNames = this.fileNames.filter(
+				(file) => file.id !== fileId
+			);
+		},
 		// Creating new Products
 		async createProducts(product) {
+			const images = this.fileNames.map((file, index) => ({
+				image: file.fileName,
+				is_thumbnail: index === 0,
+			}));
 			try {
 				await $fetch(`${getApiBaseUrl()}admin/products/`, {
 					method: 'POST',
@@ -50,7 +66,7 @@ export const useProductStore = defineStore({
 						Authorization: `Bearer ${this.authStore.userDetails.access}`,
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify(product),
+					body: JSON.stringify({ ...product, images: images }),
 				});
 				ElMessage.success('product added successfully');
 			} catch (error) {

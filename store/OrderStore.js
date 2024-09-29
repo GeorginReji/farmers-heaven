@@ -18,8 +18,10 @@ export const useOrderStore = defineStore({
 				const list = await $fetch(
 					`${getApiBaseUrl()}orders/make_order`,
 					{
-						Authorization: `Bearer ${this.authStore.userDetails.access}`,
 						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${this.authStore.userDetails.access}`,
+						},
 					}
 				);
 				this.orderList = list;
