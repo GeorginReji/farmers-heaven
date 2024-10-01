@@ -1,11 +1,11 @@
 <template>
 	<el-container class="navbar">
-		<el-row
+		<div
 			class="top-bar-logo"
 			@click="() => navigateTo({ path: '/' })"
 		>
 			<img src="~/assets/images/TFH_logo.png" />
-		</el-row>
+		</div>
 		<el-menu
 			mode="horizontal"
 			:router="true"
@@ -20,7 +20,7 @@
 			<!-- <el-menu-item index="5">Blog</el-menu-item> -->
 			<!-- <el-menu-item index="6">Know Your Farmer</el-menu-item> -->
 		</el-menu>
-		<el-container style="">
+		<div>
 			<el-dropdown
 				placement="bottom"
 				trigger="click"
@@ -65,7 +65,7 @@
 					<i class="ri-shopping-cart-line"></i>
 				</el-button>
 			</el-badge>
-		</el-container>
+		</div>
 	</el-container>
 </template>
 

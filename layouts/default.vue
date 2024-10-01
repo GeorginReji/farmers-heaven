@@ -12,9 +12,9 @@
 				<i class="ri-whatsapp-line"></i>
 			</a>
 		</div>
-		<div class="footer-section">
+		<el-footer class="footer-section">
 			<navFooter />
-		</div>
+		</el-footer>
 	</el-container>
 </template>
 
@@ -22,22 +22,22 @@
 
 <style lang="scss" scoped>
 .layout {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	// display: flex;
+	// flex-direction: column;
+	// justify-content: space-between;
 	.navbar-section {
 		position: fixed;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		top: 0;
-		left: 0;
+		// display: flex;
+		// flex-direction: column;
+		// justify-content: space-between;
+		// top: 0;
+		// left: 0;
 		width: 100%;
 		z-index: 100;
 	}
 	.hero-section {
-		padding-top: 120px;
-		width: 100%;
+		margin-top: 25px;
+		// width: 100%;
 		background-color: #fffbf0;
 	}
 	.whats-app-container {

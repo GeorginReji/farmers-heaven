@@ -9,5 +9,9 @@ $--color-primary: #67C23A;
 
 :root {
     --el-menu-horizontal-height: 40px !important; /* Your custom value */
-    /* Add other custom variable overrides here */
+    --el-footer-padding: 0 !important;
   }
+
+.el-footer {
+  --el-footer-padding: 0 !important;
+}

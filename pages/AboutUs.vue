@@ -146,7 +146,6 @@ onBeforeUnmount(() => {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin-top: 20px;
 	h1 {
 		margin-top: 10px;
 	}
