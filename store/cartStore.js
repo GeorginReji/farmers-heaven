@@ -69,6 +69,12 @@ export const useCartStore = defineStore('cart', {
 		},
 
 		async removeItem(product) {
+			console.log(
+				'remove product',
+				this.authStore.authenticated,
+				product
+			);
+
 			this.cartList = this.cartList.filter(
 				(item) =>
 					item.id !== product.id ||
@@ -78,7 +84,8 @@ export const useCartStore = defineStore('cart', {
 			this.saveToLocalStorage();
 			if (this.authStore.authenticated)
 				await this.updateCart({
-					product: product.id,
+					id: product.id,
+					product: product.product,
 					product_item: product.product_item_data.id,
 					is_active: false,
 				});

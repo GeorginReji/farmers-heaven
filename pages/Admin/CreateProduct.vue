@@ -12,6 +12,21 @@ definePageMeta({
 });
 
 const createProduct = async (formData) => {
-	await productStore.createProducts({ ...formData, images: fileNames });
+	// Format the form data
+	const images = fileNames.value.map((file, index) => ({
+		image: file.fileName,
+		is_thumbnail: index === 0,
+	}));
+	const formattedData = {
+		items: formData.items.map((item) => ({
+			price: Number(item.price),
+			name: item.name,
+			is_active: true,
+		})),
+		name: formData.title,
+		description: formData.desc,
+		images: images,
+	};
+	await productStore.createProducts(formattedData);
 };
 </script>

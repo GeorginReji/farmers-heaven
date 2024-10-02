@@ -15,7 +15,7 @@ definePageMeta({
 });
 
 const route = useRoute();
-const { updateProduct, getProductById } = useProductStore();
+const { updateProduct, getProductById, fileNames } = useProductStore();
 
 const existingProduct = ref({});
 
@@ -28,7 +28,12 @@ onMounted(async () => {
 });
 
 const handleUpdateProduct = async (formData) => {
-	await updateProduct(formData);
+	console.log('form data', formData);
+	const formattedFormData = {
+		...formData,
+		images: fileNames,
+	};
+	await updateProduct(formattedFormData);
 	navigateTo('/admin/ProductView');
 };
 </script>

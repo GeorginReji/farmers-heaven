@@ -3,18 +3,20 @@
 		border
 		:data="productsList"
 	>
-		<el-table-column
-			min-width="180"
+		<!-- <el-table-column
+			min-width="150"
 			label="Item"
 			prop="thumbnail"
+			fixed
 		>
 			<template #default="scope">
 				<el-image
+					style="width: 100px; height: 130px"
 					preview-teleported
-					:src="getImageUrl(scope)"
+					:src="getImageUrl(scope.row.thumbnail)"
 				/>
 			</template>
-		</el-table-column>
+		</el-table-column> -->
 		<el-table-column
 			width="180"
 			label="Title"
@@ -44,9 +46,21 @@
 				</template>
 			</el-table-column>
 		</el-table-column>
-		<el-table-column>
+		<el-table-column
+			fixed="right"
+			min-width="120"
+		>
 			<template #default="scope">
-				<el-button @click="handleUpdate(scope.row)">Update</el-button>
+				<el-container>
+					<el-button @click="handleUpdate(scope.row)"
+						><i class="ri-edit-box-line"
+					/></el-button>
+					<el-button
+						type="danger"
+						@click="handleDelete(scope.row)"
+						><i class="ri-delete-bin-6-line"
+					/></el-button>
+				</el-container>
 			</template>
 		</el-table-column>
 	</el-table>
@@ -63,7 +77,7 @@ definePageMeta({
 
 const router = useRouter();
 const productStore = useProductStore();
-const { productsList } = storeToRefs(productStore);
+const { productsList, fileNames } = storeToRefs(productStore);
 onMounted(() => productStore.fetchProducts());
 
 const handleUpdate = (row) => {
@@ -71,6 +85,17 @@ const handleUpdate = (row) => {
 		path: '/admin/UpdateProduct',
 		query: { id: row.id },
 	});
+};
+
+const handleDelete = (row) => {
+	console.log('Delete', row);
+	const productDeleted = {
+		id: row.id,
+		item: row.items[0].id,
+		is_active: false,
+		images: row.images,
+	};
+	productStore.updateProduct(productDeleted);
 };
 </script>
 

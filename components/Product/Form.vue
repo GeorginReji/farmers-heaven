@@ -184,14 +184,12 @@ const dialogImageUrl = ref(''); //preview image url
 const dialogVisible = ref(false); //Image preview dialog visible
 const disabled = ref(false); //remove attachment disabled
 const fileList = ref([]); //Attachment file list
-const fileIndex = ref(0); //Attachment unique Id to remove
+const { fileNames } = storeToRefs(productStore);
 // Upload image to temporary storage.
 const handleChange = async (file) => {
-	console.log('File Name:', file.name, 'File Type', file.raw.type);
 	try {
-		await productStore.uploadFile(file, fileIndex.value);
+		await productStore.uploadFile(file);
 		ElMessage.success('File uploaded successfully');
-		fileIndex.value++;
 	} catch (error) {
 		console.error('Upload failed:', error);
 		ElMessage.error('Upload failed');
@@ -201,10 +199,20 @@ const handleChange = async (file) => {
 
 // Remove Image from fileList
 const handleRemove = (file) => {
+	// console.log('Remove data', file, fileList);
 	dialogImageUrl.value = '';
 	const index = fileList.value.indexOf(file);
 	if (index !== -1) {
 		fileList.value.splice(index, 1);
+		// Remove image file from fileNames is_active
+		if (props.isEditing) {
+			const fileNameIndex = fileNames.value.findIndex(
+				(f) => f.file_name === file.name
+			);
+			if (fileNameIndex !== -1) {
+				fileNames.value[fileNameIndex].is_active = false;
+			}
+		}
 	}
 };
 // Open Image Preview model
@@ -292,6 +300,25 @@ watch(
 	{ immediate: true }
 );
 
+// Watcher for fileList
+watch(
+	() => fileList.value,
+	(newValue) => {
+		console.log('Watcher FileList', newValue);
+
+		if (newValue && props.isEditing) {
+			newValue.forEach((item) => {
+				fileNames.value.push({
+					file_name: item.name,
+					id: item.uid,
+					is_active: true,
+				});
+			});
+		}
+	}
+	// { deep: true } //Add if the logic changes send only the Images needed
+);
+
 // Function to populate form with existing data
 const populateForm = (data) => {
 	ruleForm.title = data.name || '';
@@ -313,26 +340,8 @@ const submitForm = async (formEl) => {
 	if (!formEl) return;
 	await formEl.validate(async (valid, fields) => {
 		if (valid) {
-			// Format the form data
-			const formattedData = {
-				items: ruleForm.items.map((item) => ({
-					price: Number(item.price),
-					name: item.name,
-					is_active: true,
-				})),
-				name: ruleForm.title,
-				description: ruleForm.desc,
-			};
-
-			console.log('Formatted form data:', formattedData);
-
 			try {
-				await props.onSubmit(formattedData);
-				ElMessage.success(
-					`Product ${
-						props.isEditing ? 'updated' : 'created'
-					} successfully`
-				);
+				await props.onSubmit(ruleForm);
 				resetForm(formEl);
 			} catch (error) {
 				console.error(
