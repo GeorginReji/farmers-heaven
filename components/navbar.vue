@@ -1,5 +1,49 @@
 <template>
-	<el-container class="navbar">
+	<el-header class="navbar">
+		<div class="menu-items">
+			<div
+				class="menu-icon-container"
+				@click="drawer = true"
+			>
+				<i class="ri-menu-line"></i>
+			</div>
+			<el-drawer
+				v-model="drawer"
+				size="30%"
+				title="I am the title"
+				:with-header="false"
+			>
+				<div class="logo">
+					<img
+						src="../assets/images/TFH_logo.png"
+						alt=""
+					/>
+				</div>
+				<el-menu :router="true">
+					<el-menu-item index="/ProductsList">
+						<span>Our Products</span>
+					</el-menu-item>
+					<el-menu-item index="/AboutUs">
+						<span>About</span>
+					</el-menu-item>
+					<el-menu-item index="3">
+						<span>Gift Hampers</span>
+					</el-menu-item>
+					<el-menu-item index="4">
+						<span>Gallery</span>
+					</el-menu-item>
+					<el-menu-item index="5">
+						<span>Blog</span>
+					</el-menu-item>
+					<el-menu-item
+						index="6"
+						disabled
+					>
+						<span>Know your Farmer</span>
+					</el-menu-item>
+				</el-menu>
+			</el-drawer>
+		</div>
 		<div
 			class="top-bar-logo"
 			@click="() => navigateTo({ path: '/' })"
@@ -20,7 +64,7 @@
 			<!-- <el-menu-item index="5">Blog</el-menu-item> -->
 			<!-- <el-menu-item index="6">Know Your Farmer</el-menu-item> -->
 		</el-menu>
-		<div>
+		<div class="icon-btn-wrapper">
 			<el-dropdown
 				placement="bottom"
 				trigger="click"
@@ -66,7 +110,7 @@
 				</el-button>
 			</el-badge>
 		</div>
-	</el-container>
+	</el-header>
 </template>
 
 <script setup>
@@ -82,17 +126,49 @@ const { authenticated, userDetails } = storeToRefs(authStore);
 
 <style lang="scss">
 .navbar {
+	position: fixed;
+	width: 100%;
 	font-size: 3rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	background-color: white;
+	.menu-items {
+		display: none;
+		.menu-icon-container {
+			i {
+				font-size: 24px;
+			}
+		}
+		.el-button {
+			color: white;
+		}
+		.el-drawer {
+			.logo {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				img {
+					width: 50%;
+				}
+			}
+			.el-menu {
+				border-right: none;
+			}
+			.el-sub-menu__title {
+				padding: 0;
+			}
+			.el-menu-item {
+				padding: 0;
+			}
+		}
+	}
 	.top-bar-logo {
 		display: flex;
 		padding: 1rem 0 0 1rem;
 		img {
-			height: 70px;
-			width: 70px;
+			height: 55px;
+			width: 55px;
 		}
 	}
 	.el-menu-item {
@@ -108,10 +184,34 @@ const { authenticated, userDetails } = storeToRefs(authStore);
 	.el-menu--horizontal.el-menu {
 		border-bottom: none;
 	}
+	.icon-btn-wrapper {
+		display: flex;
+	}
 }
 @media screen and (max-width: 600px) {
 	.navbar {
-		display: none;
+		position: relative;
+		.el-menu {
+			display: none;
+		}
+		.menu-items {
+			display: block;
+			.el-menu {
+				display: block;
+			}
+		}
+		.top-bar-logo {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.icon-btn-wrapper {
+			position: absolute;
+			right: 1rem;
+			top: 50%;
+			gap: 1rem;
+			transform: translateY(-50%);
+		}
 	}
 }
 </style>

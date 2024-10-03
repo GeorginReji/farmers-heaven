@@ -1,9 +1,9 @@
 <template>
 	<el-container class="layout">
-		<el-header class="navbar-section">
+		<el-container class="navbar-section">
 			<!-- <topbar /> -->
 			<navbar />
-		</el-header>
+		</el-container>
 		<el-main class="hero-section">
 			<slot />
 		</el-main>
