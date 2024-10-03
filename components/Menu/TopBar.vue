@@ -1,5 +1,5 @@
 <template>
-	<div class="topbar">
+	<el-header class="navbar">
 		<div class="menu-items">
 			<div
 				class="menu-icon-container"
@@ -15,40 +15,19 @@
 			>
 				<div class="logo">
 					<img
-						src="../assets/images/TFH_logo.png"
+						src="~/assets/images/TFH_logo.png"
 						alt=""
 					/>
 				</div>
 				<el-menu :router="true">
-					<el-menu-item index="/ProductsList">
-						<span>Our Products</span>
-					</el-menu-item>
-					<el-menu-item index="/AboutUs">
-						<span>About</span>
-					</el-menu-item>
-					<el-menu-item index="3">
-						<span>Gift Hampers</span>
-					</el-menu-item>
-					<el-menu-item index="4">
-						<span>Gallery</span>
-					</el-menu-item>
-					<el-menu-item index="5">
-						<span>Blog</span>
-					</el-menu-item>
 					<el-menu-item
-						index="6"
-						disabled
+						v-for="link in menuLinks"
+						:index="link.path"
+						:disabled="link.isDisabled"
+						>{{ link.label }}</el-menu-item
 					>
-						<span>Know your Farmer</span>
-					</el-menu-item>
 				</el-menu>
 			</el-drawer>
-		</div>
-		<div class="social-media">
-			<i class="ri-facebook-fill"></i>
-			<i class="ri-twitter-x-line"></i>
-			<i class="ri-instagram-line"></i>
-			<i class="ri-whatsapp-line"></i>
 		</div>
 		<div
 			class="top-bar-logo"
@@ -56,8 +35,20 @@
 		>
 			<img src="~/assets/images/TFH_logo.png" />
 		</div>
-		<div class="login-icons">
-			<!-- List content goes here -->
+		<el-menu
+			mode="horizontal"
+			:router="true"
+			:ellipsis="false"
+			default-active="/"
+		>
+			<el-menu-item
+				v-for="link in menuLinks"
+				:index="link.path"
+				:disabled="link.isDisabled"
+				>{{ link.label }}</el-menu-item
+			>
+		</el-menu>
+		<div class="icon-btn-wrapper">
 			<el-dropdown
 				placement="bottom"
 				trigger="click"
@@ -68,6 +59,7 @@
 				>
 					<i class="ri-user-fill" />
 				</el-button>
+				<!-- TODO: Remove the Null issue check from backend -->
 				<template #dropdown>
 					<el-dropdown-menu>
 						<el-dropdown-item v-if="authenticated">{{
@@ -91,26 +83,8 @@
 					</el-dropdown-menu>
 				</template>
 			</el-dropdown>
-			<!-- <nuxt-link
-					class="ar-link"
-					v-if="authenticated"
-				>
-					<i
-						class="ri-user-fill"
-						@click.prevent="authStore.logout"
-						>Logout</i
-					>
-				</nuxt-link>
-				<nuxt-link
-					to="/AuthLogin"
-					class="ar-link"
-					v-else
-				>
-					<i class="ri-user-fill"></i>Login/Sign-Up
-				</nuxt-link> -->
-			<!-- </div> -->
 			<el-badge
-				class="item"
+				style="margin-top: 10px"
 				:value="cartStore.cartList.length"
 			>
 				<el-button
@@ -121,7 +95,7 @@
 				</el-button>
 			</el-badge>
 		</div>
-	</div>
+	</el-header>
 </template>
 
 <script setup>
@@ -129,20 +103,57 @@ import { useAuthStore } from '@/store/authStore';
 import { useCartStore } from '@/store/cartStore';
 
 const cartStore = useCartStore();
-
 const drawer = ref(false);
 const authStore = useAuthStore();
 const { authenticated, userDetails } = storeToRefs(authStore);
+const menuLinks = [
+	{
+		label: 'Home',
+		path: '/',
+		isDisabled: false,
+	},
+	{
+		label: 'Our Products',
+		path: '/ProductsList',
+		isDisabled: false,
+	},
+	{
+		label: 'About',
+		path: '/AboutUs',
+		isDisabled: false,
+	},
+	{
+		label: 'Gift Hampers',
+		path: '/Gift Hampers',
+		isDisabled: true,
+	},
+	{
+		label: 'Gallery',
+		path: '/Gallery',
+		isDisabled: true,
+	},
+	{
+		label: 'Blog',
+		path: '/Blog',
+		isDisabled: true,
+	},
+	{
+		label: 'Know Your Farmer',
+		path: '/KnowYourFarmer',
+		isDisabled: true,
+	},
+];
 </script>
 
 <style lang="scss">
-.topbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 2.5rem;
-	background-color: #663b2f;
+.navbar {
+	position: fixed;
 	width: 100%;
+	font-size: 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
 	.menu-items {
 		display: none;
 		.menu-icon-container {
@@ -174,70 +185,55 @@ const { authenticated, userDetails } = storeToRefs(authStore);
 		}
 	}
 	.top-bar-logo {
-		display: none;
-	}
-	.social-media {
 		display: flex;
-		padding: 5px;
-		gap: 10px;
-		color: #d9cfcc;
-		i:hover {
-			cursor: pointer;
+		padding: 1rem 0 0 1rem;
+		img {
+			height: 55px;
+			width: 55px;
 		}
 	}
-	.login-icons {
+	.el-menu-item {
+		img {
+			min-width: 100%;
+			height: 100px;
+			display: flex;
+			border-top-left-radius: 20px;
+			border-top-right-radius: 20px;
+			justify-content: center;
+		}
+	}
+	.el-menu--horizontal.el-menu {
+		border-bottom: none;
+	}
+	.icon-btn-wrapper {
 		display: flex;
-		align-items: center;
-		gap: 10px;
-		font-size: 2rem;
-		padding: 5px;
-		.sign-in {
-			display: flex;
-			gap: 3px;
-			white-space: nowrap;
-			i {
-				padding-right: 5px;
-			}
-		}
-		.cart-icon {
-			display: flex;
-			gap: 5px;
-			i {
-				padding-right: 5px;
-			}
-		}
-		.el-button {
-			span {
-				display: flex;
-				gap: 10px;
-			}
-		}
-		.el-button:focus,
-		.el-button:hover {
-			color: #67c23a;
-			border-color: #85ce61;
-			outline: 0;
-		}
+		gap: 1rem;
 	}
-	@media screen and (max-width: 600px) {
-		.social-media {
+}
+@media screen and (max-width: 600px) {
+	.navbar {
+		position: relative;
+		.el-menu {
 			display: none;
-		}
-		.top-bar-logo {
-			display: flex;
-			img {
-				height: 70px;
-				width: 70px;
-				margin-left: 60px;
-			}
 		}
 		.menu-items {
 			display: block;
+			.el-menu {
+				display: block;
+			}
 		}
-	}
-	.item {
-		margin-top: 10px;
-		margin-right: 10px;
+		.top-bar-logo {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.icon-btn-wrapper {
+			position: absolute;
+			right: 1rem;
+			top: 50%;
+			gap: 1rem;
+			transform: translateY(-50%);
+		}
 	}
 }
 </style>
