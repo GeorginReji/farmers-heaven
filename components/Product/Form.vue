@@ -207,7 +207,7 @@ const handleRemove = (file) => {
 		// Remove image file from fileNames is_active
 		if (props.isEditing) {
 			const fileNameIndex = fileNames.value.findIndex(
-				(f) => f.file_name === file.name
+				(f) => f.image === file.name
 			);
 			if (fileNameIndex !== -1) {
 				fileNames.value[fileNameIndex].is_active = false;
@@ -295,28 +295,19 @@ watch(
 	(newValue) => {
 		if (newValue && Object.keys(newValue).length > 0) {
 			populateForm(newValue);
-		}
-	},
-	{ immediate: true }
-);
+			console.log('Product data', newValue.images);
 
-// Watcher for fileList
-watch(
-	() => fileList.value,
-	(newValue) => {
-		console.log('Watcher FileList', newValue);
-
-		if (newValue && props.isEditing) {
-			newValue.forEach((item) => {
+			newValue.images.forEach((item) => {
 				fileNames.value.push({
-					file_name: item.name,
-					id: item.uid,
-					is_active: true,
+					image: item.image,
+					id: item.id,
+					is_active: item.is_active,
+					is_thumbnail: item.is_thumbnail,
 				});
 			});
 		}
-	}
-	// { deep: true } //Add if the logic changes send only the Images needed
+	},
+	{ immediate: true }
 );
 
 // Function to populate form with existing data

@@ -27,11 +27,8 @@ export const useProductStore = defineStore({
 			})
 				.then((response) => {
 					// Second POST request using the URL from the first response
-					console.log('Preassigned url res', response, file.uid);
-
 					this.fileNames.push({
-						id: file.uid,
-						fileName: response.file_name,
+						image: response.file_name,
 						is_active: true,
 					});
 					return $fetch(response.url, {
@@ -49,6 +46,13 @@ export const useProductStore = defineStore({
 				});
 		},
 
+		// Remove file from state
+		// deleteFile(fileId) {
+		// 	this.fileNames = this.fileNames.filter(
+		// 		(file) => file.id !== fileId
+		// 	);
+		// },
+
 		// Creating new Products
 		async createProducts(product) {
 			try {
@@ -58,7 +62,7 @@ export const useProductStore = defineStore({
 						Authorization: `Bearer ${this.authStore.userDetails.access}`,
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ ...product, images: images }),
+					body: JSON.stringify(product),
 				});
 				ElMessage.success('product added successfully');
 				this.fileNames = [];
@@ -93,6 +97,7 @@ export const useProductStore = defineStore({
 				});
 				ElMessage.success('product updated successfully');
 				this.fileNames = [];
+				await this.fetchProducts();
 			} catch (error) {
 				console.error('Error creating cart to API:', error);
 			}
