@@ -27,33 +27,6 @@
 					:label="tableColumn.Label"
 					:min-width="tableColumn.minWidth"
 				/>
-				<!-- <el-table-column
-					v-if="tableColumn.Prop === 'items'"
-					:fixed="tableColumn.fixed"
-					:prop="tableColumn.Prop"
-					:label="tableColumn.Label"
-					:min-width="tableColumn.minWidth"
-				>
-					<template #default="scope">
-						<el-table
-							:data="scope.row.items"
-							border
-						>
-							<el-table-column
-								prop="product_data"
-								label="Item Name"
-							/>
-							<el-table-column
-								prop="amount"
-								label="Amount"
-							/>
-							<el-table-column
-								prop="quantity"
-								label="Quantity"
-							/>
-						</el-table>
-					</template>
-				</el-table-column> -->
 				<el-table-column
 					v-if="tableColumn.Prop === 'items'"
 					:fixed="tableColumn.fixed"
@@ -68,7 +41,7 @@
 								:key="index"
 								class="item-cell"
 							>
-								{{ item.product_data }}
+								{{ item.product_data.name }}
 							</div>
 						</template>
 					</el-table-column>

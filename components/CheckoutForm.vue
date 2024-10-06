@@ -224,7 +224,10 @@ const onSubmit = () => {
 	const formattedCartData = cartStore.cartList.map((item) => ({
 		product: item.product,
 		quantity: item.count,
+		product_item: item.product_item_data.id,
 	}));
+	console.log('formatted cart data', cartStore.cartList);
+
 	cartStore.confirmOrder({
 		items: formattedCartData,
 		name: form.fullName,
