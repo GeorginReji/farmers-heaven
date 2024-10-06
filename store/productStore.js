@@ -28,6 +28,7 @@ export const useProductStore = defineStore({
 				.then((response) => {
 					// Second POST request using the URL from the first response
 					this.fileNames.push({
+						uid: file.uid,
 						image: response.file_name,
 						is_active: true,
 					});

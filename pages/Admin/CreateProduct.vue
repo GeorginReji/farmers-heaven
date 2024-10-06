@@ -14,7 +14,7 @@ definePageMeta({
 const createProduct = async (formData) => {
 	// Format the form data
 	const images = fileNames.value.map((file, index) => ({
-		image: file.fileName,
+		image: file.image,
 		is_thumbnail: index === 0,
 	}));
 	const formattedData = {

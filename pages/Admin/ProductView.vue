@@ -3,7 +3,7 @@
 		border
 		:data="productsList"
 	>
-		<!-- <el-table-column
+		<el-table-column
 			min-width="150"
 			label="Item"
 			prop="thumbnail"
@@ -16,7 +16,7 @@
 					:src="getImageUrl(scope.row.thumbnail)"
 				/>
 			</template>
-		</el-table-column> -->
+		</el-table-column>
 		<el-table-column
 			width="180"
 			label="Title"

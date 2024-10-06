@@ -28,10 +28,12 @@ onMounted(async () => {
 });
 
 const handleUpdateProduct = async (formData) => {
-	console.log('form data', formData);
+	// destructuring and removing id from fileNames
+	const formattedImageData = fileNames.map(({ uid, ...rest }) => rest);
 	const formattedFormData = {
+		id: productId,
 		...formData,
-		images: fileNames,
+		images: formattedImageData,
 	};
 	await updateProduct(formattedFormData);
 	navigateTo('/admin/ProductView');

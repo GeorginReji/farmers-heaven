@@ -14,9 +14,9 @@
 		>
 			<el-form-item
 				label="Product Title"
-				prop="title"
+				prop="name"
 			>
-				<el-input v-model="ruleForm.title" />
+				<el-input v-model="ruleForm.name" />
 			</el-form-item>
 			<!-- <el-form-item
 				label="Stock"
@@ -73,10 +73,10 @@
 
 			<el-form-item
 				label="Product Description"
-				prop="desc"
+				prop="description"
 			>
 				<el-input
-					v-model="ruleForm.desc"
+					v-model="ruleForm.description"
 					type="textarea"
 				/>
 			</el-form-item>
@@ -171,9 +171,9 @@ const props = defineProps({
 
 // Form data state
 const ruleForm = reactive({
-	title: '',
+	name: '',
 	isInStock: true,
-	desc: '',
+	description: '',
 	items: [{ price: 0, name: '' }],
 	images: [],
 });
@@ -199,19 +199,18 @@ const handleChange = async (file) => {
 
 // Remove Image from fileList
 const handleRemove = (file) => {
-	// console.log('Remove data', file, fileList);
+	console.log('Remove data', file, fileList.value);
 	dialogImageUrl.value = '';
 	const index = fileList.value.indexOf(file);
 	if (index !== -1) {
 		fileList.value.splice(index, 1);
 		// Remove image file from fileNames is_active
-		if (props.isEditing) {
-			const fileNameIndex = fileNames.value.findIndex(
-				(f) => f.image === file.name
-			);
-			if (fileNameIndex !== -1) {
-				fileNames.value[fileNameIndex].is_active = false;
-			}
+
+		const fileNameIndex = fileNames.value.findIndex(
+			(f) => f.image === file.name || f.uid === file.uid
+		);
+		if (fileNameIndex !== -1) {
+			fileNames.value[fileNameIndex].is_active = false;
 		}
 	}
 };
@@ -223,10 +222,10 @@ const handlePictureCardPreview = (file) => {
 
 // Form rules.
 const rules = {
-	title: [
+	name: [
 		{
 			required: true,
-			message: 'Please input product title',
+			message: 'Please input product name',
 			trigger: 'blur',
 		},
 		{
@@ -255,7 +254,7 @@ const rules = {
 			trigger: ['blur'],
 		},
 	],
-	desc: [
+	description: [
 		{
 			required: true,
 			message: 'Please input product description',
@@ -299,8 +298,8 @@ watch(
 
 			newValue.images.forEach((item) => {
 				fileNames.value.push({
-					image: item.image,
 					id: item.id,
+					image: item.image,
 					is_active: item.is_active,
 					is_thumbnail: item.is_thumbnail,
 				});
@@ -312,8 +311,8 @@ watch(
 
 // Function to populate form with existing data
 const populateForm = (data) => {
-	ruleForm.title = data.name || '';
-	ruleForm.desc = data.description || '';
+	ruleForm.name = data.name || '';
+	ruleForm.description = data.description || '';
 	ruleForm.items = data.items?.map((item) => ({
 		price: item.price,
 		name: item.name,
