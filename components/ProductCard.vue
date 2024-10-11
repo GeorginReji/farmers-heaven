@@ -29,7 +29,7 @@
 						<el-button
 							type="success"
 							class="button"
-							@click="handlePlaceOrder"
+							@click="handleAddToCart"
 							>Add to <i class="ri-shopping-cart-line"></i
 						></el-button>
 					</div>
@@ -48,10 +48,31 @@ const props = defineProps({
 	product: Object,
 });
 
-const handlePlaceOrder = () => {
+// Get already existing count in cart.
+const getProductQuantityInCart = (productId, itemId) => {
+	let itemCount = 0;
+	cartStore.cartList.forEach((item) => {
+		if (
+			item.product === productId &&
+			item.product_item_data.id === itemId
+		) {
+			itemCount = item.count;
+		}
+	});
+	return itemCount;
+};
+
+// If product already exists in cart get the product count and increment
+const handleAddToCart = () => {
+	let countInCart = getProductQuantityInCart(
+		props.product.id,
+		props.product.items[0].id
+	);
+	countInCart++;
+
 	cartStore.addItem(
 		{ ...props.product, product_item_data: props.product.items[0] },
-		1
+		countInCart
 	);
 };
 
