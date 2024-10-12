@@ -1,19 +1,10 @@
 <template>
-	<el-container style="display: flex; flex-direction: column; gap: 2rem">
-		<el-container style="display: flex; justify-content: flex-end">
-			<el-button
-				@click="updateSelectedRows"
-				:disabled="selectedRows.length === 0"
-				style="margin-top: 20px"
-			>
-				Update Status
-			</el-button>
-		</el-container>
+	<el-container class="wrapper">
 		<el-table
 			border
 			table-layout="auto"
 			@selection-change="handleSelectionChange"
-			:data="orderList"
+			:data="orderList.results"
 		>
 			<el-table-column
 				type="selection"
@@ -85,6 +76,15 @@
 				</template>
 			</el-table-column> -->
 		</el-table>
+		<el-pagination
+			v-model:current-page="currentPage"
+			v-model:page-size="pageSize"
+			:page-sizes="[10, 20, 50, 100]"
+			layout="total, sizes, prev, pager, next"
+			:total="orderList.count"
+			@size-change="handleSizeChange"
+			@current-change="handleCurrentChange"
+		/>
 	</el-container>
 </template>
 
@@ -102,12 +102,32 @@ const selectedRows = ref([]);
 
 onMounted(() => orderStore.fetchOrders());
 
-const handleSelectionChange = (val) => {
-	selectedRows.value = val;
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const fetchOrders = () => {
+	orderStore.fetchOrders({
+		page: currentPage.value,
+		pageSize: pageSize.value,
+	});
 };
 
-const updateSelectedRows = () => {
-	console.log(selectedRows.value);
+onMounted(() => {
+	fetchOrders();
+});
+
+const handleSizeChange = (size) => {
+	pageSize.value = size;
+	fetchOrders();
+};
+
+const handleCurrentChange = (page) => {
+	currentPage.value = page;
+	fetchOrders();
+};
+
+const handleSelectionChange = (val) => {
+	selectedRows.value = val;
 };
 
 const tableColumns = [
@@ -139,6 +159,11 @@ const tableColumns = [
 </script>
 
 <style lang="scss">
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+}
 .item-cell {
 	padding: 5px 0;
 	border-bottom: 1px solid #ebeef5;

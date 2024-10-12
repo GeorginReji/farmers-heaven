@@ -72,13 +72,20 @@ export const useProductStore = defineStore({
 			}
 		},
 		// Get all products
-		async fetchProducts() {
+		async fetchProducts({ page, pageSize }) {
 			this.isLoading = true;
 			try {
-				const list = await $fetch(`${getApiBaseUrl()}admin/products/`, {
-					method: 'GET',
-				});
-				this.productsList = list.results;
+				const response = await $fetch(
+					`${getApiBaseUrl()}admin/products/`,
+					{
+						method: 'GET',
+						query: {
+							page: page,
+							page_size: pageSize,
+						},
+					}
+				);
+				this.productsList = response;
 			} catch (error) {
 				ElMessage.error('Error fetching products');
 				console.log('Error fetching products', error);
@@ -109,11 +116,11 @@ export const useProductStore = defineStore({
 			return useAuthStore();
 		},
 		getProductById: (state) => async (id) => {
-			if (state.productsList.length === 0) {
+			if (state.productsList.results.length === 0) {
 				await state.fetchProducts();
 			}
 			const numericId = parseInt(id, 10);
-			const product = state.productsList.find(
+			const product = state.productsList.results.find(
 				(product) => product.id === numericId
 			);
 			return product || null;

@@ -1,9 +1,8 @@
 <template>
-	<div
+	<el-container
 		class="product-list-wrapper"
-		v-if="productsList"
+		v-if="productsList.results"
 	>
-		<!-- <h1>{{ productsList }}</h1> -->
 		<el-row
 			class="product-row"
 			style="padding-top: 3rem"
@@ -14,13 +13,22 @@
 				:sm="12"
 				:md="6"
 				style="padding: 0 10px"
-				v-for="(product, index) in productsList"
+				v-for="product in productsList.results"
 				:key="product.id"
 			>
 				<ProductCard :product="product" />
 			</el-col>
 		</el-row>
-	</div>
+		<el-pagination
+			v-model:current-page="currentPage"
+			v-model:page-size="pageSize"
+			:page-sizes="[10, 25, 50, 100]"
+			layout="total, sizes, prev, pager, next"
+			:total="productsList.count"
+			@size-change="handleSizeChange"
+			@current-change="handleCurrentChange"
+		/>
+	</el-container>
 	<div v-else><h2>productList empty</h2></div>
 </template>
 
@@ -29,19 +37,42 @@ definePageMeta({
 	middleware: 'default',
 });
 import { useProductStore } from '@/store/productStore';
-const dataStore = useProductStore();
-const { productsList } = storeToRefs(dataStore);
+const productStore = useProductStore();
+const { productsList } = storeToRefs(productStore);
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const fetchProducts = () => {
+	productStore.fetchProducts({
+		page: currentPage.value,
+		pageSize: pageSize.value,
+	});
+};
+
 onMounted(() => {
-	dataStore.fetchProducts();
+	fetchProducts();
 });
+
+const handleSizeChange = (size) => {
+	pageSize.value = size;
+	fetchProducts();
+};
+
+const handleCurrentChange = (page) => {
+	currentPage.value = page;
+	fetchProducts();
+};
 </script>
 
 <style lang="scss" scoped>
-.product-row {
-	margin-bottom: 20px;
-}
 .product-list-wrapper {
 	padding: 3rem 6rem;
+	display: flex;
+	flex-direction: column;
+	.product-row {
+		margin-bottom: 20px;
+	}
 }
 @media only screen and (max-width: 767px) {
 	.product-list-wrapper {

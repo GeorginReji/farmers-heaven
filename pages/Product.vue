@@ -94,7 +94,6 @@ import { getImageUrl } from '~/utils/utils';
 
 const cartStore = useCartStore();
 const router = useRoute();
-const config = useRuntimeConfig();
 const productStore = useProductStore();
 
 const productById = ref(null);
@@ -120,10 +119,29 @@ const selectedQuantity = computed(() => {
 	);
 });
 
+// Get already existing count in cart.
+const getProductQuantityInCart = (productId, itemId) => {
+	let itemCount = 0;
+	cartStore.cartList.forEach((item) => {
+		if (
+			item.product === productId &&
+			item.product_item_data.id === itemId
+		) {
+			itemCount = item.count;
+		}
+	});
+	return itemCount;
+};
+
 const handlePlaceOrder = () => {
+	let countInCart = getProductQuantityInCart(
+		productById.value.id,
+		productById.value.items[0].id
+	);
+	countInCart++;
 	cartStore.addItem(
 		{ ...productById.value, product_item_data: selectedQuantity.value },
-		1
+		countInCart
 	);
 };
 

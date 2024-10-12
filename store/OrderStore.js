@@ -12,7 +12,7 @@ export const useOrderStore = defineStore({
 	},
 	actions: {
 		// Fetch Order history
-		async fetchOrders() {
+		async fetchOrders({ page, pageSize }) {
 			this.isLoading = true;
 			try {
 				const list = await $fetch(
@@ -22,9 +22,13 @@ export const useOrderStore = defineStore({
 						headers: {
 							Authorization: `Bearer ${this.authStore.userDetails.access}`,
 						},
+						query: {
+							page: page,
+							page_size: pageSize,
+						},
 					}
 				);
-				this.orderList = list.results;
+				this.orderList = list;
 			} catch (error) {
 				ElMessage.error('Order fetch error');
 				console.log(error);
