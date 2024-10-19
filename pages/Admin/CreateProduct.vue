@@ -23,8 +23,8 @@ const createProduct = async (formData) => {
 			name: item.name,
 			is_active: true,
 		})),
-		name: formData.title,
-		description: formData.desc,
+		name: formData.name,
+		description: formData.description,
 		images: images,
 	};
 	await productStore.createProducts(formattedData);

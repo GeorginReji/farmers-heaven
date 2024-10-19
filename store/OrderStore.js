@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import { getApiBaseUrl } from '@/utils/utils';
-import { useAuthStore } from './authStore';
+import useApi from '@/composable/useApi';
 
 export const useOrderStore = defineStore({
 	id: 'orderStore',
@@ -13,21 +12,13 @@ export const useOrderStore = defineStore({
 	actions: {
 		// Fetch Order history
 		async fetchOrders({ page, pageSize }) {
+			const api = useApi();
 			this.isLoading = true;
 			try {
-				const list = await $fetch(
-					`${getApiBaseUrl()}orders/make_order`,
-					{
-						method: 'GET',
-						headers: {
-							Authorization: `Bearer ${this.authStore.userDetails.access}`,
-						},
-						query: {
-							page: page,
-							page_size: pageSize,
-						},
-					}
-				);
+				const list = await api.get('orders/make_order', {
+					page,
+					page_size: pageSize,
+				});
 				this.orderList = list;
 			} catch (error) {
 				ElMessage.error('Order fetch error');
@@ -35,11 +26,6 @@ export const useOrderStore = defineStore({
 			} finally {
 				this.isLoading = false;
 			}
-		},
-	},
-	getters: {
-		authStore() {
-			return useAuthStore();
 		},
 	},
 });

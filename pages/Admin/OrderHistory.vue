@@ -100,7 +100,7 @@ definePageMeta({
 
 const selectedRows = ref([]);
 
-onMounted(() => orderStore.fetchOrders());
+onMounted(() => fetchOrders());
 
 const currentPage = ref(1);
 const pageSize = ref(10);

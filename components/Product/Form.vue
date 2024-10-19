@@ -185,6 +185,7 @@ const dialogVisible = ref(false); //Image preview dialog visible
 const disabled = ref(false); //remove attachment disabled
 const fileList = ref([]); //Attachment file list
 const { fileNames } = storeToRefs(productStore);
+
 // Upload image to temporary storage.
 const handleChange = async (file) => {
 	try {
@@ -371,10 +372,5 @@ const resetForm = (formEl) => {
 		justify-content: space-between;
 		gap: 1rem;
 	}
-
-	/*.dynamic-field-group .el-form-item {
-		margin-right: 20px;
-		margin-bottom: 0;
-	} */
 }
 </style>

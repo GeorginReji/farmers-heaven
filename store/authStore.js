@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { getApiBaseUrl } from '~/utils/utils';
 import { useCartStore } from './cartStore';
+import useApi from '~/composable/useApi';
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
 		userDetails: null,
@@ -24,23 +25,15 @@ export const useAuthStore = defineStore('auth', {
 		},
 		async authStart() {
 			this.loading = true;
-			const data = await $fetch(`${getApiBaseUrl()}users/oauth_start`, {
-				method: 'GET',
-			});
-			console.log('redirect url', data);
+			const api = useApi();
+			const data = api.get('users/oauth_start');
 			await navigateTo(data.url, { external: true });
-			// navigateTo({ path: '/' });
 		},
 
 		async autUser(code) {
 			try {
-				const response = await $fetch(
-					`${getApiBaseUrl()}users/oauth-callback`,
-					{
-						method: 'GET',
-						query: { code },
-					}
-				);
+				const api = useApi();
+				const response = api.get('users/oauth-callback', code);
 				ElMessage({
 					message: 'Successfully logged in',
 					type: 'success',

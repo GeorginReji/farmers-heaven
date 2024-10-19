@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
+import useApi from '~/composable/useApi';
 
 export const useCartStore = defineStore('cart', {
 	state: () => ({
@@ -25,8 +26,6 @@ export const useCartStore = defineStore('cart', {
 		},
 		// Add an Item to the cart
 		addItem(item, count) {
-			console.log('add item cart list', item);
-
 			const existingItemIndex = this.cartList.findIndex(
 				(product) =>
 					product.id === item.id &&
@@ -100,15 +99,9 @@ export const useCartStore = defineStore('cart', {
 		},
 
 		async createCart(item) {
+			const api = useApi();
 			try {
-				await $fetch(`${getApiBaseUrl()}orders/cart/`, {
-					method: 'POST',
-					headers: {
-						Authorization: `Bearer ${this.authStore.userDetails.access}`,
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(item),
-				});
+				await api.post('orders/cart/', item);
 			} catch (error) {
 				console.error('Error creating cart to API:', error);
 			} finally {
@@ -116,13 +109,9 @@ export const useCartStore = defineStore('cart', {
 			}
 		},
 		async fetchCart() {
+			const api = useApi();
 			try {
-				const data = await $fetch(`${getApiBaseUrl()}orders/cart`, {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${this.authStore.userDetails.access}`,
-					},
-				});
+				const data = await api.get('orders/cart');
 				const formattedCartData = data.results.map((item) => ({
 					id: item.id,
 					product: item.product,
@@ -130,23 +119,15 @@ export const useCartStore = defineStore('cart', {
 					...item.product_data,
 					product_item_data: item.product_item_data,
 				}));
-
-				console.log('cart before mapping:', data);
-
 				this.cartList = formattedCartData;
 			} catch (error) {
 				console.error('Error fetching cart from API:', error);
 			}
 		},
 		async updateCart(item) {
+			const api = useApi();
 			try {
-				await $fetch(`${getApiBaseUrl()}orders/cart/`, {
-					method: 'PUT',
-					headers: {
-						Authorization: `Bearer ${this.authStore.userDetails.access}`,
-					},
-					body: JSON.stringify(item),
-				});
+				api.put('orders/cart/', item);
 				await this.fetchCart();
 			} catch (error) {
 				console.error('Error Updating cart to API:', error);
@@ -154,14 +135,8 @@ export const useCartStore = defineStore('cart', {
 		},
 		async confirmOrder(item) {
 			try {
-				await $fetch(`${getApiBaseUrl()}orders/make_order/`, {
-					method: 'POST',
-					headers: {
-						Authorization: `Bearer ${this.authStore.userDetails.access}`,
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(item),
-				});
+				const api = useApi();
+				api.post('orders/make_order/', item);
 				ElMessage({
 					message: 'Your order is confirmed.',
 					type: 'success',
@@ -178,23 +153,18 @@ export const useCartStore = defineStore('cart', {
 		},
 		async fetchStates() {
 			try {
-				const data = await $fetch(`${getApiBaseUrl()}/admin/state`, {
-					method: 'GET',
-				});
-				// console.log('states list', data);
-
-				this.statesList = data.results;
+				const api = useApi();
+				const dataList = await api.get('admin/state');
+				this.statesList = dataList.results;
 			} catch (error) {
 				console.error('Error fetching states from API:', error);
 			}
 		},
 		async fetchCity() {
 			try {
-				const data = await $fetch(`${getApiBaseUrl()}/admin/city`, {
-					method: 'GET',
-				});
-				// console.log('city list', data);
-				this.cityList = data.results;
+				const api = useApi();
+				const dataList = await api.get('admin/city');
+				this.cityList = dataList.results;
 			} catch (error) {
 				console.error('Error fetching city from API:', error);
 			}
