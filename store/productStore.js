@@ -83,8 +83,6 @@ export const useProductStore = defineStore({
 			try {
 				await api.put('admin/products/', product);
 				ElMessage.success('product updated successfully');
-				this.fileNames = [];
-				await this.fetchProducts();
 			} catch (error) {
 				console.error('Error creating cart to API:', error);
 			}

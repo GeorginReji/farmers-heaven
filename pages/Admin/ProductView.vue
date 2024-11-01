@@ -12,10 +12,12 @@
 			>
 				<template #default="scope">
 					<el-image
+						v-if="scope.row.thumbnail"
 						style="width: 100px; height: 130px"
 						preview-teleported
 						:src="getImageUrl(scope.row.thumbnail)"
 					/>
+					<el-text v-else>Image not available</el-text>
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -120,7 +122,7 @@ const handleUpdate = (row) => {
 };
 
 const handleDelete = (row) => {
-	console.log('Delete', row);
+	// console.log('Delete', row);
 	const productDeleted = {
 		id: row.id,
 		item: row.items[0].id,
@@ -128,6 +130,7 @@ const handleDelete = (row) => {
 		images: row.images,
 	};
 	productStore.updateProduct(productDeleted);
+	fetchProducts();
 };
 </script>
 
