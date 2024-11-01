@@ -7,7 +7,7 @@
 			<slot />
 		</el-main>
 		<div class="whats-app-container">
-			<a href="https://wa.me/8281560102">
+			<a href="https://wa.me/7994909555">
 				<i class="ri-whatsapp-line" />
 			</a>
 		</div>
