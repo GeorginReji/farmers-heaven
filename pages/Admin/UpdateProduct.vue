@@ -30,6 +30,8 @@ onMounted(async () => {
 const handleUpdateProduct = async (formData) => {
 	// destructuring and removing id from fileNames
 	const formattedImageData = fileNames.map(({ uid, ...rest }) => rest);
+	console.log('formattedImagesData', formattedImageData);
+
 	const formattedFormData = {
 		id: productId,
 		...formData,

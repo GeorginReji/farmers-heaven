@@ -94,8 +94,8 @@ const { productsList } = storeToRefs(productStore);
 const currentPage = ref(1);
 const pageSize = ref(10);
 
-const fetchProducts = () => {
-	productStore.fetchProducts({
+const fetchProducts = async () => {
+	await productStore.fetchProducts({
 		page: currentPage.value,
 		pageSize: pageSize.value,
 	});

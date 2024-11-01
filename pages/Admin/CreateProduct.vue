@@ -15,7 +15,8 @@ const createProduct = async (formData) => {
 	// Format the form data
 	const images = fileNames.value.map((file, index) => ({
 		image: file.image,
-		is_thumbnail: index === 0,
+		is_thumbnail: index === 0 && file.is_active,
+		is_active: file.is_active,
 	}));
 	const formattedData = {
 		items: formData.items.map((item) => ({

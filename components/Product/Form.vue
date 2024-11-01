@@ -200,7 +200,7 @@ const handleChange = async (file) => {
 
 // Remove Image from fileList
 const handleRemove = (file) => {
-	console.log('Remove data', file, fileList.value);
+	// console.log('Remove data', file, fileList.value);
 	dialogImageUrl.value = '';
 	const index = fileList.value.indexOf(file);
 	if (index !== -1) {
