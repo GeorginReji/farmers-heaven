@@ -7,7 +7,7 @@
 
 		<div class="login-form">
 			<el-button
-				@click="handleSignup"
+				@click="authStart"
 				:style="{ width: '100%' }"
 				type="primary"
 			>
@@ -27,11 +27,6 @@ const { authStart } = useAuthStore();
 definePageMeta({
 	layout: 'auth-layout',
 });
-const activeName = ref('first');
-
-const handleSignup = async (e) => {
-	await authStart();
-};
 </script>
 
 <style lang="scss" scoped>
