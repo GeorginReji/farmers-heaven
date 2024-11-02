@@ -7,7 +7,7 @@
 	<div class="product-row">
 		<el-divider />
 		<h2>Bestsellers products</h2>
-		<el-row :gutter="20">
+		<!-- <el-row :gutter="20">
 			<el-col
 				:span="5"
 				:xs="12"
@@ -40,7 +40,7 @@
 			>
 				<ProductCard />
 			</el-col>
-		</el-row>
+		</el-row> -->
 	</div>
 </template>
 
