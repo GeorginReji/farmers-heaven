@@ -15,7 +15,9 @@
 			<div class="card-content">
 				<div class="product-details">
 					<div class="product-name">
-						<span>{{ product.name }}</span>
+						<span>{{
+							product.name + '(' + selectedItem.name + ')'
+						}}</span>
 					</div>
 					<p class="description">
 						{{
@@ -24,7 +26,22 @@
 					</p>
 				</div>
 				<div class="btn-price">
-					<span>₹{{ props.product.items[0].price }}</span>
+					<el-dropdown
+						size="small"
+						split-button
+						type="default"
+					>
+						{{ selectedItem.price }}
+						<template #dropdown>
+							<el-dropdown-menu>
+								<el-dropdown-item
+									v-for="item in product.items"
+									@click="selectedItem = item"
+									>{{ item.name }}</el-dropdown-item
+								>
+							</el-dropdown-menu>
+						</template>
+					</el-dropdown>
 					<div class="bottom">
 						<el-button
 							type="success"
@@ -47,6 +64,7 @@ const cartStore = useCartStore();
 const props = defineProps({
 	product: Object,
 });
+const selectedItem = ref(props.product.items[0]);
 
 // Get already existing count in cart.
 const getProductQuantityInCart = (productId, itemId) => {
@@ -66,12 +84,12 @@ const getProductQuantityInCart = (productId, itemId) => {
 const handleAddToCart = () => {
 	let countInCart = getProductQuantityInCart(
 		props.product.id,
-		props.product.items[0].id
+		selectedItem.value.id
 	);
 	countInCart++;
 
 	cartStore.addItem(
-		{ ...props.product, product_item_data: props.product.items[0] },
+		{ ...props.product, product_item_data: selectedItem.value },
 		countInCart
 	);
 };
@@ -100,6 +118,7 @@ const imageUrl = computed(() => getImageUrl(props.product.thumbnail));
 		flex-direction: column;
 		justify-content: space-between;
 		width: 100%;
+		padding: 0 2rem;
 		span {
 			font-size: 1.2em;
 			font-weight: 600;

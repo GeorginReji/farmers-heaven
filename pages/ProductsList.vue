@@ -9,7 +9,7 @@
 		>
 			<el-col
 				:span="4"
-				:xs="12"
+				:xs="24"
 				:sm="12"
 				:md="6"
 				style="padding: 0 10px"
