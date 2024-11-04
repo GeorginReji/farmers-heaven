@@ -3,10 +3,13 @@
 		<div class="cart-table">
 			<div class="heading">
 				<h1>Shopping Cart</h1>
-				<span>
-					<i class="ri-arrow-right-line"></i>
+				<el-link
+					:underline="false"
+					@click="() => navigateTo({ path: '/productsList' })"
+				>
+					<i class="ri-arrow-left-line" />
 					Continue Shopping
-				</span>
+				</el-link>
 			</div>
 			<div
 				v-if="cartStore.cartList.length"
@@ -154,9 +157,6 @@ const handleCheckout = () => {
 			color: #663b2f;
 			h1 {
 				font-size: 30px;
-			}
-			span {
-				font-size: 14px;
 			}
 		}
 		.el-card {
