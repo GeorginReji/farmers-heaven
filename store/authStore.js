@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { getApiBaseUrl } from '~/utils/utils';
 import { useCartStore } from './cartStore';
 import useApi from '~/composable/useApi';
 export const useAuthStore = defineStore('auth', {
@@ -26,32 +25,28 @@ export const useAuthStore = defineStore('auth', {
 		async authStart() {
 			this.loading = true;
 			const api = useApi();
-			const data = api.get('users/oauth_start');
-			await navigateTo(data.url, { external: true });
+			const data = await api.get('users/oauth_start');
+			console.log('authStart', data);
+			// await navigateTo(data.url, { external: true });
 		},
 
-		async autUser(code) {
+		async authUser(code) {
 			try {
+				console.log('code', code);
+
 				const api = useApi();
-				const response = api.get('users/oauth-callback', code);
+				const response = await api.get('users/oauth-callback', {
+					code,
+				});
+				// console.log('auth user response', response);
+
 				ElMessage({
 					message: 'Successfully logged in',
 					type: 'success',
 				});
-				const refreshToken = useCookie('refreshToken', {
-					maxAge: 60 * 60 * 24 * 2,
-				}); // 2 days
-				refreshToken.value = response.refresh;
-
-				const accessToken = useCookie('accessToken', {
-					maxAge: 60 * 60 * 24,
-				}); // 1 day
-				accessToken.value = response.access;
-
-				const user = useCookie('user', { maxAge: 60 * 60 * 24 }); // 1 day
-				user.value = JSON.stringify(response.user);
 				this.authenticated = true;
 				localStorage.setItem('authDetails', JSON.stringify(response));
+				this.userDetails = JSON.stringify(response);
 				return true;
 			} catch (error) {
 				ElMessage({

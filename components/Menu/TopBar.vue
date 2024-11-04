@@ -62,11 +62,14 @@
 				<!-- TODO: Remove the Null issue check from backend -->
 				<template #dropdown>
 					<el-dropdown-menu>
-						<el-dropdown-item v-if="authenticated">{{
-							userDetails.user.first_name
-								? userDetails.user.first_name
-								: 'Null'
-						}}</el-dropdown-item>
+						<el-dropdown-item
+							v-if="authenticated && userDetails.user"
+							>{{
+								userDetails.user.first_name
+									? userDetails.user.first_name
+									: 'Null'
+							}}</el-dropdown-item
+						>
 						<el-dropdown-item v-if="authenticated"
 							>Settings</el-dropdown-item
 						>

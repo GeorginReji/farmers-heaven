@@ -16,7 +16,7 @@ export default function useApi() {
 			...customHeaders,
 		};
 
-		if (authStore.userDetails.access) {
+		if (authStore.authenticated && authStore.userDetails.access) {
 			headers.Authorization = `Bearer ${authStore.userDetails.access}`;
 		}
 

@@ -7,22 +7,22 @@
 
 <script setup>
 import { useAuthStore } from '@/store/authStore';
-
 const authStore = useAuthStore();
+const { isLoading } = storeToRefs(authStore);
+
 const route = useRoute();
 const router = useRouter();
-const { isLoading } = storeToRefs(authStore);
+
 console.log('loading state', isLoading.value);
 
-const init = async () => {
-	if (await authStore.autUser(route.query.code)) {
-		router.push('/');
+onMounted(async () => {
+	if (await authStore.authUser(route.query.code)) {
+		await router.push('/');
+		// console.log('auth user', authStore.userDetails);
 	} else {
 		router.push('/AuthLogin');
 	}
-};
-
-init();
+});
 </script>
 
 <style lang="scss"></style>
