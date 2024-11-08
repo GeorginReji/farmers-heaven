@@ -27,7 +27,7 @@ export const useAuthStore = defineStore('auth', {
 			const api = useApi();
 			const data = await api.get('users/oauth_start');
 			console.log('authStart', data);
-			// await navigateTo(data.url, { external: true });
+			await navigateTo(data.url, { external: true });
 		},
 
 		async authUser(code) {
