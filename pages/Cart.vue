@@ -5,6 +5,7 @@
 				<h1>Shopping Cart</h1>
 				<el-link
 					:underline="false"
+					type="success"
 					@click="() => navigateTo({ path: '/productsList' })"
 				>
 					<i class="ri-arrow-left-line" />
@@ -27,15 +28,26 @@
 							<div class="name">
 								<p>{{ product.name }}</p>
 								<span
-									>Quantity:
-									{{ product.product_item_data.name }}
+									>{{ product.product_item_data.name }}
 								</span>
+								<!-- <el-select
+									v-model="value"
+									placeholder="Quantity"
+									size="small"
+								>
+									<el-option
+										v-for="item in options"
+										:key="item.value"
+										:label="item.label"
+										:value="item.value"
+									/>
+								</el-select> -->
 							</div>
 							<el-input-number
 								v-model="product.count"
 								@change="
-									() =>
-										cartStore.updateItemCount(
+									async () =>
+										await cartStore.updateItemCount(
 											product.product,
 											product.product_item_data.id,
 											product.count
@@ -183,7 +195,7 @@ const handleCheckout = () => {
 					}
 					span {
 						color: #747474;
-						font-size: 13px;
+						font-size: 1.6rem;
 						font-weight: 600;
 					}
 				}

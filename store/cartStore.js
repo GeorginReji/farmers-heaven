@@ -25,7 +25,7 @@ export const useCartStore = defineStore('cart', {
 			localStorage.setItem('cart', JSON.stringify(this.cartList));
 		},
 		// Add an Item to the cart
-		addItem(item, count) {
+		async addItem(item, count) {
 			const existingItemIndex = this.cartList.findIndex(
 				(product) =>
 					product.id === item.id &&
@@ -45,20 +45,20 @@ export const useCartStore = defineStore('cart', {
 			if (this.authStore.authenticated) {
 				console.log('added product', item);
 
-				this.createCart({
+				await this.createCart({
 					product: item.id,
 					quantity: count,
 					product_item: item.product_item_data.id,
 				});
 			}
 		},
-		updateItemCount(id, quantityId, newCount) {
+		async updateItemCount(id, quantityId, newCount) {
 			console.log('Increment count', id, quantityId, newCount);
 
 			if (this.cartList.length) {
 				this.saveToLocalStorage();
 				if (this.authStore.authenticated)
-					this.updateCart({
+					await this.updateCart({
 						product: id,
 						product_item: quantityId,
 						quantity: newCount,
@@ -105,7 +105,7 @@ export const useCartStore = defineStore('cart', {
 			} catch (error) {
 				console.error('Error creating cart to API:', error);
 			} finally {
-				this.fetchCart();
+				await this.fetchCart();
 			}
 		},
 		async fetchCart() {
