@@ -16,7 +16,7 @@
 				v-if="cartStore.cartList.length"
 				style="width: 100%"
 			>
-				<el-card v-for="(product, index) in cartStore.cartList">
+				<el-card v-for="product in cartStore.cartList">
 					<div class="product-info">
 						<el-image
 							style="width: 100px; height: 100px"
@@ -24,30 +24,50 @@
 							alt="product image"
 							fit="cover"
 						/>
-						<div class="cart-product-details">
+						<div
+							class="cart-product-details"
+							v-if="selectedQuantities.get(product.product)"
+						>
 							<div class="name">
 								<p>{{ product.name }}</p>
-								<span
-									>{{ product.product_item_data.name }}
-								</span>
-								<!-- <el-select
-									v-model="value"
-									placeholder="Quantity"
+								<p>
+									{{
+										selectedQuantities.get(product.product)
+											.name
+									}}
+								</p>
+								<el-select
+									:placeholder="
+										selectedQuantities.get(product.product)
+											? selectedQuantities.get(
+													product.product
+											  ).name
+											: 'quantities'
+									"
 									size="small"
+									@change="
+										(newValue) =>
+											handleQuantityChange(
+												product,
+												newValue
+											)
+									"
 								>
 									<el-option
-										v-for="item in options"
-										:key="item.value"
-										:label="item.label"
-										:value="item.value"
+										v-for="item in quantityMap[
+											product.product
+										]"
+										:key="item.id"
+										:label="item.name"
+										:value="item"
 									/>
-								</el-select> -->
+								</el-select>
 							</div>
 							<el-input-number
 								v-model="product.count"
 								@change="
 									async () =>
-										await cartStore.updateItemCount(
+										updateItemCount(
 											product.product,
 											product.product_item_data.id,
 											product.count
@@ -58,14 +78,14 @@
 							<h3>
 								{{
 									`₹${
-										product.product_item_data.price *
-										product.count
+										selectedQuantities.get(product.product)
+											.price * product.count
 									}`
 								}}
 							</h3>
 							<el-button
 								circle
-								@click="cartStore.removeItem(product)"
+								@click="removeItem(product)"
 								><i class="ri-delete-bin-line"></i
 							></el-button>
 						</div>
@@ -122,21 +142,75 @@ const config = useRuntimeConfig();
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const checkoutFormVisible = ref(false);
+const { quantityMap, cartList } = storeToRefs(cartStore);
+const selectedQuantities = ref(new Map());
 
 onMounted(async () => {
 	await cartStore.loadFromStorage();
+	// console.log(cartList.value);
+	cartList.value.forEach((product) => {
+		selectedQuantities.value.set(
+			product.product,
+			product.product_item_data
+		);
+	});
 });
 
 const imageUrl = (productImgUrl) => {
 	return `${config.public.imageBase + productImgUrl}`;
 };
 
+const handleQuantityChange = async (product, newValue) => {
+	selectedQuantities.value.set(product.product, newValue);
+	if (authStore.authenticated)
+		await cartStore.updateCart({
+			product: product.product,
+			product_item: newValue.id,
+			quantity: product.count,
+			is_active: true,
+		});
+};
 const subTotal = computed(() => {
-	return cartStore.cartList.reduce(
+	return cartList.value.reduce(
 		(total, item) => total + item.product_item_data.price * item.count,
 		0
 	);
 });
+
+// Add item count.
+const updateItemCount = async (id, quantityId, newCount) => {
+	console.log('Increment count', id, quantityId, newCount);
+	if (cartList.value.length) {
+		cartStore.saveToLocalStorage();
+		if (authStore.authenticated)
+			await cartStore.updateCart({
+				product: id,
+				product_item: quantityId,
+				quantity: newCount,
+				is_active: true,
+			});
+	}
+};
+
+// Delete Product from cart.
+const removeItem = async (product) => {
+	console.log('remove product', authStore.authenticated, product);
+
+	cartList.value = cartList.value.filter(
+		(item) =>
+			item.id !== product.id ||
+			item.product_item_data.id !== product.product_item_data.id
+	);
+
+	cartStore.saveToLocalStorage();
+	if (authStore.authenticated)
+		await cartStore.updateCart({
+			id: product.id,
+			product: product.product,
+			product_item: product.product_item_data.id,
+			is_active: false,
+		});
+};
 const handleCheckout = () => {
 	if (!authStore.authenticated) {
 		navigateTo('/AuthLogin');
