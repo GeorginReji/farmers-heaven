@@ -14,9 +14,10 @@ export const useCartStore = defineStore('cart', {
 	},
 	actions: {
 		// Load data from local storage
-		loadFromLocalStorage() {
+		async loadFromLocalStorage() {
 			const storedCart = localStorage.getItem('cart');
 			this.cartList = storedCart ? JSON.parse(storedCart) : [];
+			await this.createProductQuantityMap(this.cartList);
 		},
 
 		// Save data to local storage
@@ -56,7 +57,7 @@ export const useCartStore = defineStore('cart', {
 			if (this.authStore.authenticated) {
 				await this.fetchCart();
 			} else {
-				this.loadFromLocalStorage();
+				await this.loadFromLocalStorage();
 			}
 		},
 
@@ -82,7 +83,6 @@ export const useCartStore = defineStore('cart', {
 					product_item_data: item.product_item_data,
 				}));
 				this.cartList = formattedCartData;
-				await this.createProductQuantityMap(formattedCartData);
 			} catch (error) {
 				console.error('Error fetching cart from API:', error);
 			}
@@ -100,12 +100,17 @@ export const useCartStore = defineStore('cart', {
 		async createProductQuantityMap(cartData) {
 			const api = useApi();
 			try {
-				const promises = cartData.map((item) =>
-					api.get('admin/products/', {
-						id: item.product,
-					})
+				const promises = cartData.map(
+					async (item) =>
+						await api.get('admin/products/', {
+							id: this.authStore.authenticated
+								? item.product
+								: item.id,
+						})
 				);
 				const responses = await Promise.all(promises);
+				console.log('response ', responses);
+
 				// Extract the results array from each response and flatten to single array
 				const productsArray = responses.flatMap(
 					(response) => response.results

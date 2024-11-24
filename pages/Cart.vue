@@ -26,22 +26,15 @@
 						/>
 						<div
 							class="cart-product-details"
-							v-if="selectedQuantities.get(product.product)"
+							v-if="selectedQuantities.get(product.id)"
 						>
 							<div class="name">
 								<p>{{ product.name }}</p>
-								<p>
-									{{
-										selectedQuantities.get(product.product)
-											.name
-									}}
-								</p>
 								<el-select
 									:placeholder="
-										selectedQuantities.get(product.product)
-											? selectedQuantities.get(
-													product.product
-											  ).name
+										selectedQuantities.get(product.id)
+											? selectedQuantities.get(product.id)
+													.name
 											: 'quantities'
 									"
 									size="small"
@@ -55,7 +48,9 @@
 								>
 									<el-option
 										v-for="item in quantityMap[
-											product.product
+											authStore.authenticated
+												? product.product
+												: product.id
 										]"
 										:key="item.id"
 										:label="item.name"
@@ -78,7 +73,7 @@
 							<h3>
 								{{
 									`₹${
-										selectedQuantities.get(product.product)
+										selectedQuantities.get(product.id)
 											.price * product.count
 									}`
 								}}
@@ -149,10 +144,7 @@ onMounted(async () => {
 	await cartStore.loadFromStorage();
 	// console.log(cartList.value);
 	cartList.value.forEach((product) => {
-		selectedQuantities.value.set(
-			product.product,
-			product.product_item_data
-		);
+		selectedQuantities.value.set(product.id, product.product_item_data);
 	});
 });
 
@@ -161,9 +153,10 @@ const imageUrl = (productImgUrl) => {
 };
 
 const handleQuantityChange = async (product, newValue) => {
-	selectedQuantities.value.set(product.product, newValue);
+	selectedQuantities.value.set(product.id, newValue);
 	if (authStore.authenticated)
 		await cartStore.updateCart({
+			id: product.id,
 			product: product.product,
 			product_item: newValue.id,
 			quantity: product.count,
@@ -258,19 +251,22 @@ const handleCheckout = () => {
 					justify-content: space-between;
 					align-items: center;
 					gap: 1rem;
-				}
-				.name {
-					display: flex;
-					flex-direction: column;
-					gap: 1rem;
-					p {
-						font-size: 16px;
-						font-weight: 600;
-					}
-					span {
-						color: #747474;
-						font-size: 1.6rem;
-						font-weight: 600;
+					.name {
+						height: auto;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						align-items: center;
+						gap: 1rem;
+						p {
+							font-size: 16px;
+							font-weight: 600;
+						}
+						span {
+							color: #747474;
+							font-size: 1.6rem;
+							font-weight: 600;
+						}
 					}
 				}
 				h3 {
