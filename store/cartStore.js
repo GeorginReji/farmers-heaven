@@ -5,8 +5,7 @@ import useApi from '~/composable/useApi';
 export const useCartStore = defineStore('cart', {
 	state: () => ({
 		cartList: [],
-		statesList: [],
-		cityList: [],
+		quantityMap: {},
 	}),
 	getters: {
 		authStore() {
@@ -15,9 +14,10 @@ export const useCartStore = defineStore('cart', {
 	},
 	actions: {
 		// Load data from local storage
-		loadFromLocalStorage() {
+		async loadFromLocalStorage() {
 			const storedCart = localStorage.getItem('cart');
 			this.cartList = storedCart ? JSON.parse(storedCart) : [];
+			await this.createProductQuantityMap(this.cartList);
 		},
 
 		// Save data to local storage
@@ -52,49 +52,12 @@ export const useCartStore = defineStore('cart', {
 				});
 			}
 		},
-		async updateItemCount(id, quantityId, newCount) {
-			console.log('Increment count', id, quantityId, newCount);
-
-			if (this.cartList.length) {
-				this.saveToLocalStorage();
-				if (this.authStore.authenticated)
-					await this.updateCart({
-						product: id,
-						product_item: quantityId,
-						quantity: newCount,
-						is_active: true,
-					});
-			}
-		},
-
-		async removeItem(product) {
-			console.log(
-				'remove product',
-				this.authStore.authenticated,
-				product
-			);
-
-			this.cartList = this.cartList.filter(
-				(item) =>
-					item.id !== product.id ||
-					item.product_item_data.id !== product.product_item_data.id
-			);
-
-			this.saveToLocalStorage();
-			if (this.authStore.authenticated)
-				await this.updateCart({
-					id: product.id,
-					product: product.product,
-					product_item: product.product_item_data.id,
-					is_active: false,
-				});
-		},
 
 		async loadFromStorage() {
 			if (this.authStore.authenticated) {
-				this.fetchCart();
+				await this.fetchCart();
 			} else {
-				this.loadFromLocalStorage();
+				await this.loadFromLocalStorage();
 			}
 		},
 
@@ -133,40 +96,37 @@ export const useCartStore = defineStore('cart', {
 				console.error('Error Updating cart to API:', error);
 			}
 		},
-		async confirmOrder(item) {
+		// create quantity hashmap for quantity of products cart
+		async createProductQuantityMap(cartData) {
+			const api = useApi();
 			try {
-				const api = useApi();
-				api.post('orders/make_order/', item);
-				ElMessage({
-					message: 'Your order is confirmed.',
-					type: 'success',
-				});
+				const promises = cartData.map(
+					async (item) =>
+						await api.get('admin/products/', {
+							id: this.authStore.authenticated
+								? item.product
+								: item.id,
+						})
+				);
+				const responses = await Promise.all(promises);
+				console.log('response ', responses);
+
+				// Extract the results array from each response and flatten to single array
+				const productsArray = responses.flatMap(
+					(response) => response.results
+				);
+
+				// Create map from the products array
+				const quantityMap = productsArray.reduce((map, product) => {
+					map[product.id] = product.items;
+					return map;
+				}, {});
+				console.log('quantity map', quantityMap);
+
+				this.quantityMap = quantityMap;
 			} catch (error) {
-				console.error('Error in confirming order:', error);
-				ElMessage({
-					message: 'Error making order.',
-					type: 'error',
-				});
-			} finally {
-				this.fetchCart();
-			}
-		},
-		async fetchStates() {
-			try {
-				const api = useApi();
-				const dataList = await api.get('admin/state');
-				this.statesList = dataList.results;
-			} catch (error) {
-				console.error('Error fetching states from API:', error);
-			}
-		},
-		async fetchCity() {
-			try {
-				const api = useApi();
-				const dataList = await api.get('admin/city');
-				this.cityList = dataList.results;
-			} catch (error) {
-				console.error('Error fetching city from API:', error);
+				ElMessage.error('Error fetching products for cart map');
+				console.log('Error fetching products', error);
 			}
 		},
 	},

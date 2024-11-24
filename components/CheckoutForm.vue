@@ -107,11 +107,11 @@
 </template>
 
 <script setup>
+import { useOrderStore } from '@/store/OrderStore';
 import { useCartStore } from '@/store/cartStore';
 
 const cartStore = useCartStore();
-// const stateList = storeToRefs(cartStore, 'stateList');
-// const cityList = storeToRefs(cartStore, 'cityList');
+const orderStore = useOrderStore();
 
 const props = defineProps({
 	checkoutFormVisible: Boolean,
@@ -119,8 +119,8 @@ const props = defineProps({
 const emit = defineEmits(['update:checkoutFormVisible']);
 
 onMounted(() => {
-	cartStore.fetchStates();
-	cartStore.fetchCity();
+	orderStore.fetchStates();
+	orderStore.fetchCity();
 });
 
 const dialogVisible = computed({
@@ -228,7 +228,7 @@ const onSubmit = () => {
 	}));
 	console.log('formatted cart data', cartStore.cartList);
 
-	cartStore.confirmOrder({
+	orderStore.confirmOrder({
 		items: formattedCartData,
 		name: form.fullName,
 		pincode: form.pincode,

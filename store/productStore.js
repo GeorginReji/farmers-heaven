@@ -61,14 +61,12 @@ export const useProductStore = defineStore({
 			}
 		},
 		// Get all products
-		async fetchProducts({ page, pageSize }) {
+		async fetchProducts(params = {}) {
 			this.isLoading = true;
 			const api = useApi();
+
 			try {
-				const response = await api.get('admin/products/', {
-					page: page,
-					page_size: pageSize,
-				});
+				const response = await api.get('admin/products/', params);
 				this.productsList = response;
 			} catch (error) {
 				ElMessage.error('Error fetching products');
@@ -90,7 +88,7 @@ export const useProductStore = defineStore({
 	},
 	getters: {
 		getProductById: (state) => async (id) => {
-			if (state.productsList.results.length === 0) {
+			if (state.productsList.length === 0) {
 				await state.fetchProducts();
 			}
 			const numericId = parseInt(id, 10);
