@@ -32,9 +32,9 @@ export const useAuthStore = defineStore('auth', {
 
 		async authUser(code) {
 			try {
-				console.log('code', code);
-
+				// console.log('code', code);
 				const api = useApi();
+				const cartStore = useCartStore();
 				const response = await api.get('users/oauth-callback', {
 					code,
 				});
@@ -47,6 +47,8 @@ export const useAuthStore = defineStore('auth', {
 				this.authenticated = true;
 				localStorage.setItem('authDetails', JSON.stringify(response));
 				this.userDetails = JSON.stringify(response);
+				// console.log('token', response.access);
+				await cartStore.synLocalStorageCart(response.access);
 				return true;
 			} catch (error) {
 				ElMessage({

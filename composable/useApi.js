@@ -19,6 +19,12 @@ export default function useApi() {
 		if (authStore.authenticated && authStore.userDetails.access) {
 			headers.Authorization = `Bearer ${authStore.userDetails.access}`;
 		}
+		// else {
+		// 	ElMessage({
+		// 		message: 'User not logged in',
+		// 		type: 'error',
+		// 	});
+		// }
 
 		const config = {
 			method,

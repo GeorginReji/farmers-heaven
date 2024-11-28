@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
 import useApi from '~/composable/useApi';
+import { getApiBaseUrl } from '@/utils/utils';
 
 export const useCartStore = defineStore('cart', {
 	state: () => ({
@@ -43,8 +44,6 @@ export const useCartStore = defineStore('cart', {
 
 			this.saveToLocalStorage();
 			if (this.authStore.authenticated) {
-				console.log('added product', item);
-
 				await this.createCart({
 					product: item.id,
 					quantity: count,
@@ -60,7 +59,6 @@ export const useCartStore = defineStore('cart', {
 				await this.loadFromLocalStorage();
 			}
 		},
-
 		async createCart(item) {
 			const api = useApi();
 			try {
@@ -69,6 +67,32 @@ export const useCartStore = defineStore('cart', {
 				console.error('Error creating cart to API:', error);
 			} finally {
 				await this.fetchCart();
+			}
+		},
+		async synLocalStorageCart(token) {
+			try {
+				let storedCart = localStorage.getItem('cart');
+				storedCart = storedCart ? JSON.parse(storedCart) : [];
+				if (storedCart.length) {
+					const cartPromise = storedCart.map((item) =>
+						$fetch(`${getApiBaseUrl()}orders/cart/`, {
+							method: 'POST',
+							headers: {
+								Authorization: `Bearer ${token}`,
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({
+								product: item.id,
+								quantity: item.count,
+								product_item: item.product_item_data.id,
+							}),
+						})
+					);
+					await Promise.all(cartPromise);
+					console.log('Cart store data updated');
+				}
+			} catch (error) {
+				console.error('Error in localstorage sync', error);
 			}
 		},
 		async fetchCart() {
@@ -87,6 +111,7 @@ export const useCartStore = defineStore('cart', {
 				console.error('Error fetching cart from API:', error);
 			}
 		},
+
 		async updateCart(item) {
 			const api = useApi();
 			try {
@@ -109,7 +134,6 @@ export const useCartStore = defineStore('cart', {
 						})
 				);
 				const responses = await Promise.all(promises);
-				console.log('response ', responses);
 
 				// Extract the results array from each response and flatten to single array
 				const productsArray = responses.flatMap(
@@ -121,7 +145,6 @@ export const useCartStore = defineStore('cart', {
 					map[product.id] = product.items;
 					return map;
 				}, {});
-				console.log('quantity map', quantityMap);
 
 				this.quantityMap = quantityMap;
 			} catch (error) {
