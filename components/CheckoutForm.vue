@@ -54,7 +54,7 @@
 							placeholder="select state"
 						>
 							<el-option
-								v-for="item in cartStore.statesList"
+								v-for="item in orderStore.statesList"
 								:label="item.name"
 								:value="item.id"
 							/>
@@ -72,7 +72,7 @@
 							placeholder="select city"
 						>
 							<el-option
-								v-for="item in cartStore.cityList"
+								v-for="item in orderStore.cityList"
 								:label="item.name"
 								:value="item.id"
 							/>
