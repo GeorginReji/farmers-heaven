@@ -162,9 +162,13 @@ const handleQuantityChange = async (product, newValue) => {
 			is_active: true,
 		});
 };
+
 const subTotal = computed(() => {
-	return cartList.value.reduce(
-		(total, item) => total + item.product_item_data.price * item.count,
+	return Array.from(selectedQuantities.value.entries()).reduce(
+		(total, [id, productItem]) => {
+			const cartItem = cartList.value.find((item) => item.id === id);
+			return total + productItem.price * cartItem.count;
+		},
 		0
 	);
 });
@@ -193,7 +197,7 @@ const removeItem = async (product) => {
 			item.id !== product.id ||
 			item.product_item_data.id !== product.product_item_data.id
 	);
-
+	selectedQuantities.value.delete(product.id);
 	cartStore.saveToLocalStorage();
 	if (authStore.authenticated)
 		await cartStore.updateCart({
