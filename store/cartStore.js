@@ -18,7 +18,6 @@ export const useCartStore = defineStore('cart', {
 		async loadFromLocalStorage() {
 			const storedCart = localStorage.getItem('cart');
 			this.cartList = storedCart ? JSON.parse(storedCart) : [];
-			await this.createProductQuantityMap(this.cartList);
 		},
 
 		// Save data to local storage
@@ -58,6 +57,7 @@ export const useCartStore = defineStore('cart', {
 			} else {
 				await this.loadFromLocalStorage();
 			}
+			await this.createProductQuantityMap(this.cartList);
 		},
 		async createCart(item) {
 			const api = useApi();

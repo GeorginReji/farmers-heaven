@@ -142,7 +142,6 @@ const selectedQuantities = ref(new Map());
 
 onMounted(async () => {
 	await cartStore.loadFromStorage();
-	// console.log(cartList.value);
 	cartList.value.forEach((product) => {
 		selectedQuantities.value.set(product.id, product.product_item_data);
 	});
