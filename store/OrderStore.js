@@ -46,7 +46,7 @@ export const useOrderStore = defineStore({
 					type: 'error',
 				});
 			} finally {
-				fetchCart();
+				await fetchCart();
 			}
 		},
 		async fetchStates() {
